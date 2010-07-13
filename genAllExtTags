@@ -3,4 +3,4 @@
 TMP_FILE="tmp.tags"
 ./genExtTags >  $TMP_FILE
 ./sortTagsFile.pl $TMP_FILE > tags
-rm $TMP_FILE
+#rm $TMP_FILE
