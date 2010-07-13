@@ -1,0 +1,6 @@
+#!/bin/bash
+#wrapper to generate sorted tags file in same dir
+TMP_FILE="tmp.tags"
+./genExtTags >  $TMP_FILE
+./sortTagsFile.pl $TMP_FILE > tags
+rm $TMP_FILE
