@@ -26,14 +26,14 @@ my $sig;
 my $param_name;
 my $param_type;
 my %params = ();
+my $property = "";
+my $type = "";
+my $method = "";
+my $return = "";
 
 foreach(@lines){
 	chomp;
 	my $line = $_;
-	my $property = "";
-	my $type = "";
-	my $method = "";
-	my $return = "";
 	my $re;
 
 	if($line =~ /^\s*[\*]?\s*\@class\s([A-Za-z0-9_\$\.]*).*$/) {
@@ -97,7 +97,6 @@ foreach(@lines){
 	}
 	#when comment starts clear some vars
 	if($line =~ /^\s*\/\*\*/) {
-		resetVars();
 		$getMember = 1;
 	}
 	#function parameters
@@ -120,7 +119,7 @@ foreach(@lines){
 		$method = $1;
 	}
 	#property type
-	if ($line =~ /^\s*[\*]?\s*\@type\s+([^}]*)/g) {
+	if ($line =~ /^\s*\*\s*\@type\s+\}?([A-Za-z0-9_]*)\}?/g) {
 		#print "found type: $1\n";
 		$type = $1;
 	}
@@ -134,7 +133,6 @@ foreach(@lines){
 	if ($getMember == 1) {
 		#match member declaration	
 		if($line =~ /^\s*([a-zA-Z_\$][a-zA-Z_0-9\$]*)\s*:\s*(.*)$/) {
-			#print "found declaration: $1 : $2\n";
 			my $mName = $1;
 			my $mValue = $2;
 			#check if function or property
@@ -165,6 +163,12 @@ foreach(@lines){
 			if (length($sig) > 0) {
 				$tagStr = $tagStr.$TAB.'signature:'.$sig;
 			}
+			#add return type as type
+			if (length($return) > 0) {
+				$tagStr = $tagStr.$TAB.'type:'.$return;
+			} elsif (length($type) > 0) {
+				$tagStr = $tagStr.$TAB.'type:'.$type;
+			}
 			#exclude any globals -- there are only a few which are not needed -- everything should hang off Ext...
 			if ($class ne '') {
 				#add link for help
@@ -173,6 +177,7 @@ foreach(@lines){
 			}
 			#reset flag until next doc comment
 			$getMember = 0;
+			resetVars();
 		}
 	}
 
