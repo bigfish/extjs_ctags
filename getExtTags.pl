@@ -175,6 +175,23 @@ foreach(@lines){
 			$getMember = 0;
 		}
 	}
+
+	#if we have a shortcut assignment to another function or member, write a stub token which will be rewritten in 
+	#post-processing stage
+	if ($line =~ /^\s*(Ext[\.a-zA-Z_0-9]+)\s*=\s*(Ext[\.a-zA-Z_0-9]+).*$/ ) {
+		my $cmd = $_;
+		my $pointer = $1;
+		my $pointee = $2;
+
+		#Note: this only captures all the fully qualified references (Ext...)
+		#there are some exceptions to the pattern
+		if ($pointee !~ /Ext\.extend/ && $pointee !~ /\.prototype\./ && $pointee !~ /Ext\.apply/) {
+		
+			#spit out stub tag
+			$tagStr = $pointer."==>".$pointee."\n";
+			print $tagStr;
+		}
+	}
 }
 
 sub resetVars {
