@@ -30,6 +30,8 @@ my $property = "";
 my $type = "";
 my $method = "";
 my $return = "";
+my $getDescr = 0;
+my $descr = "";
 
 foreach(@lines){
 	chomp;
@@ -95,10 +97,22 @@ foreach(@lines){
 			$getConstructor = 0;
 		}
 	}
+	#get first line of member comment as description
+	if ($getDescr) {
+		#ignore @ lines -- not descriptions
+		if ($line !~ /^\s*\*?\s*\@/){
+			if ($line =~ /^\s*\*?\s*(.*)/){
+				$descr = $1;
+			}
+		}
+		$getDescr = 0;
+	}
 	#when comment starts clear some vars
 	if($line =~ /^\s*\/\*\*/) {
 		$getMember = 1;
+		$getDescr = 1;#get next line
 	}
+	
 	#function parameters
 	if ($line =~ /^\s*[\*]?\s*\@param\s+\{([^}]*)\}\s([a-zA-Z0-9_\$]+)/g) {
 
@@ -184,10 +198,16 @@ foreach(@lines){
 			} elsif (length($type) > 0) {
 				$tagStr = $tagStr.$TAB.'type:'.$type;
 			}
+
+			#add full class name as link for help docs
+			$tagStr = $tagStr.$TAB.'link:'.$full_class;
+
+			#add description if any
+			if ($descr) {
+				$tagStr = $tagStr.$TAB.'descr:'.$descr;
+			}
 			#exclude any globals -- there are only a few which are not needed -- everything should hang off Ext...
 			if ($class ne '') {
-				#add link for help
-				$tagStr = $tagStr.$TAB.'link:'.$full_class;
 				print "$tagStr\n";
 			}
 			#reset flag until next doc comment
@@ -227,6 +247,8 @@ sub resetVars {
 	$tagStr = "";
 	$inherit = "";
 	$sig = "";
+	$getDescr = 0;
+	$descr = "";
 }
 
 
