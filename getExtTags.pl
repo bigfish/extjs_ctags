@@ -168,7 +168,7 @@ foreach(@lines){
 			if ($mName =~ /constructor/){
 				$mName = $class;
 				$typeToken = 'f';
-				$type = "constructor";
+				$return = $class;
 			}
 
 			#construct tag
