@@ -25,7 +25,7 @@ my $inherit = "";
 my $sig;
 my $param_name;
 my $param_type;
-my %params = ();
+my @params = ();
 my $property = "";
 my $type = "";
 my $method = "";
@@ -108,10 +108,8 @@ foreach(@lines){
 		if(index($line, "(optional)") > -1) {
 			$param_name .= "?";
 		}
-		$params{ $param_name } = $param_type;#$1 = name , $2 = type
+		push(@params, { name => $param_name, type => $param_type });#$1 = name , $2 = type
 
-		#print "adding param : $param_name = " . $params{$param_name} . "\n";
-		my @keys = keys %params;
 	}
 	#function return value
 	if ($line =~ /^\s*[\*]?\s*\@return\s+\{([^}]*)\}/g) {
@@ -147,8 +145,12 @@ foreach(@lines){
 				#construct signature
 				$sig = "(";
 				my $isfirstparam = 1;
+                my $numparams = scalar(@params);
+				for (my $p = 0; $p < $numparams; $p++ ) {
 
-				while ( ($param_name, $param_type) = each %params) {
+                    my $param_name = $params[$p]{'name'};
+                    my $param_type = $params[$p]{'type'};
+
 					if ($isfirstparam) {
 						$sig .= '<+'.$param_name.":".$param_type.'+>' ;
 						$isfirstparam = 0;
@@ -215,7 +217,7 @@ foreach(@lines){
 sub resetVars {
 	$property = "";
 	$type = "";
-	%params = ();
+	@params = ();
 	$method = "";
 	$return = "";
 	$memberType = "";
