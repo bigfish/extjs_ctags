@@ -5,7 +5,11 @@ if [ -z $1 ];then
 	exit 1
 fi
 SRC=$1
+EXT=$EXT_HOME
 TMP_FILE="tmp.tags"
-./genExtTags $SRC >  $TMP_FILE
-./replacePointers.pl $TMP_FILE > tags
+
+$EXT/genExtTags $SRC >  $TMP_FILE
+
+$EXT/replacePointers.pl $TMP_FILE > tags
+
 rm $TMP_FILE
