@@ -101,8 +101,13 @@ foreach(@lines){
 	}
 	#function parameters
 	if ($line =~ /^\s*[\*]?\s*\@param\s+\{([^}]*)\}\s([a-zA-Z0-9_\$]+)/g) {
+
 		$param_type = $1;
 		$param_name = $2;
+		#append ? to optional parameter name
+		if(index($line, "(optional)") > -1) {
+			$param_name .= "?";
+		}
 		$params{ $param_name } = $param_type;#$1 = name , $2 = type
 
 		#print "adding param : $param_name = " . $params{$param_name} . "\n";
@@ -158,6 +163,14 @@ foreach(@lines){
 				#print "found property: $mName \n";
 				$typeToken = "v";#f = field?
 			}
+
+			#rename constructor to class name
+			if ($mName =~ /constructor/){
+				$mName = $class;
+				$typeToken = 'f';
+				$type = "constructor";
+			}
+
 			#construct tag
 			$tagStr = $mName.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$class;
 			if (length($sig) > 0) {
