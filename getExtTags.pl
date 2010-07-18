@@ -177,7 +177,7 @@ foreach(@lines){
                     my $param_type = $params[$p]{'type'};
 
 					if ($isfirstparam) {
-						$sig .= '' ;
+						$sig .= '<+'.$param_name.":".$param_type.'+>' ;
 						$isfirstparam = 0;
 					} else {
 						$sig .= ", " . '<+'.$param_name.":".$param_type.'+>' ;
@@ -222,7 +222,11 @@ foreach(@lines){
 			}
 			#add description if any
 			if ($descr) {
-				$tagStr = $tagStr.$TAB.'descr:'.$descr;
+				#make sure there are no tabs in description
+				$descr =~ s/\t/ /g;
+				#still seems to be a problem with including description text.. causes errors in vim
+				#perhaps lines are too long, or whitespace in comments is a problem?
+				#$tagStr = $tagStr.$TAB.'descr:'.$descr;
 			}
 			#exclude any globals -- there are only a few which are not needed -- everything should hang off Ext...
 			if ($class ne '') {
