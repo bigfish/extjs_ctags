@@ -5,13 +5,14 @@ if [ -z $1 ];then
 	exit 1
 fi
 SRC=$1
+INFO_FILE="$(pwd)/info"
+#the scripts are in EXT_HOME
 EXT=$EXT_HOME
 TMP_FILE="tmp.tags"
-INFO_FILE="info"
 rm $INFO_FILE
-touch info
+touch $INFO_FILE
 
-$EXT/genExtTags $SRC >  $TMP_FILE
+$EXT/genExtTags $SRC $INFO_FILE >  $TMP_FILE
 
 $EXT/replacePointers.pl $TMP_FILE > tags
 

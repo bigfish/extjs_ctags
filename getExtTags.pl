@@ -2,6 +2,7 @@
 use File::Basename;
 #script to extract exuberant ctags from Ext js source code
 my $file = shift;
+my $infofile = shift;
 my $infolinenum = shift;
 #find classes in file
 (my $filename, my $filepath, my $ext) = fileparse($file, qr{\..*});
@@ -182,7 +183,7 @@ foreach(@lines){
 						$sig .= '<+'.$param_name.":".$param_type.'+>' ;
 						$isfirstparam = 0;
 					} else {
-						$sig .= ", " . '<+'.$param_name.":".$param_type.'+>' ;
+						$sig .= "," . '<+'.$param_name.":".$param_type.'+>' ;
 						#$sig .=  ", " . $param_type . " " . $param_name;
 					}
 				}
@@ -220,7 +221,8 @@ foreach(@lines){
 			#Note: it is not possible to have non-static methods on singletons
 			#since singletons are just POJOs they cannot be instantiated
 			if ($singleton || $static) {
-				$tagStr = $tagStr.$TAB.'static:true'
+				#using the field name 'static' was causing errors
+				$tagStr = $tagStr.$TAB.'isstatic:true'
 			}
 			#add description if any
 			if ($descr) {
@@ -230,7 +232,7 @@ foreach(@lines){
 				#$tagStr = $tagStr.$TAB.'descr:'.$descr;
 				#lets juts use a line index
 				$infolinenum += 1;
-				$tagStr = $tagStr.$TAB.'info:'.$infolinenum;
+				$tagStr = $tagStr.$TAB.'info:'.$infofile . '|' . $infolinenum;
 
 			}
 			#exclude any globals -- there are only a few which are not needed -- everything should hang off Ext...

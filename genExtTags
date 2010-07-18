@@ -7,6 +7,11 @@ if [ -z $1 ];then
 	exit 1
 fi
 SRC=$1
+if [ -z $2 ];then
+	echo "info file is required 2nd argument"
+	exit 1
+fi
+INFO=$2
 
 echo '!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/'
 echo '!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/'
@@ -16,7 +21,7 @@ echo '!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	'
 echo '!_TAG_PROGRAM_VERSION	5.8	//'
 
 for file in $(find $SRC -name "*.js"); do
-	#also give linecount of info file as 2nd param
-	${EXT_HOME}/getExtTags.pl $file $(wc -l info | awk '{print $1}')
+	#also give infofile and linecount of info file as 2nd and 3rd param
+	${EXT_HOME}/getExtTags.pl $file $INFO $(wc -l info | awk '{print $1}')
 done
 
