@@ -7,6 +7,9 @@ fi
 SRC=$1
 EXT=$EXT_HOME
 TMP_FILE="tmp.tags"
+INFO_FILE="info"
+rm $INFO_FILE
+touch info
 
 $EXT/genExtTags $SRC >  $TMP_FILE
 

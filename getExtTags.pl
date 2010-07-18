@@ -2,7 +2,7 @@
 use File::Basename;
 #script to extract exuberant ctags from Ext js source code
 my $file = shift;
-
+my $infolinenum = shift;
 #find classes in file
 (my $filename, my $filepath, my $ext) = fileparse($file, qr{\..*});
 #read file into string
@@ -34,6 +34,7 @@ my $getDescr = 0;
 my $descr = "";
 my $singleton = 0;
 my $static = 0;
+my @infolines = ();
 
 foreach(@lines){
 	chomp;
@@ -110,6 +111,7 @@ foreach(@lines){
 		if ($line !~ /^\s*\*?\s*\@/){
 			if ($line =~ /^\s*\*?\s*(.*)/){
 				$descr = $1;
+				push(@infolines, $descr);
 			}
 		}
 		$getDescr = 0;
@@ -223,10 +225,13 @@ foreach(@lines){
 			#add description if any
 			if ($descr) {
 				#make sure there are no tabs in description
-				$descr =~ s/\t/ /g;
 				#still seems to be a problem with including description text.. causes errors in vim
 				#perhaps lines are too long, or whitespace in comments is a problem?
 				#$tagStr = $tagStr.$TAB.'descr:'.$descr;
+				#lets juts use a line index
+				$infolinenum += 1;
+				$tagStr = $tagStr.$TAB.'info:'.$infolinenum;
+
 			}
 			#exclude any globals -- there are only a few which are not needed -- everything should hang off Ext...
 			if ($class ne '') {
@@ -255,6 +260,14 @@ foreach(@lines){
 		}
 	}
 }
+
+#write infolines to info file
+open (INFO, '>>info');
+foreach (@infolines){
+	print INFO $_."\n";
+}
+close (INFO); 
+
 
 sub resetVars {
 	$property = "";

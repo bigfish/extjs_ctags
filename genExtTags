@@ -16,6 +16,7 @@ echo '!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	'
 echo '!_TAG_PROGRAM_VERSION	5.8	//'
 
 for file in $(find $SRC -name "*.js"); do
-	${EXT_HOME}/getExtTags.pl $file
+	#also give linecount of info file as 2nd param
+	${EXT_HOME}/getExtTags.pl $file $(wc -l info | awk '{print $1}')
 done
 
