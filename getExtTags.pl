@@ -14,7 +14,7 @@ my $getMember = 0;
 my $getClass = 0;
 my $getConstructor = 0;
 my $tagStr = "";
-my $TAB = '	';
+my $TAB = "	";
 my $class = "";
 my $full_class = "";
 my $full_class_re = "";
@@ -33,6 +33,7 @@ my $return = "";
 my $getDescr = 0;
 my $descr = "";
 my $singleton = 0;
+my $static = 0;
 
 foreach(@lines){
 	chomp;
@@ -146,6 +147,10 @@ foreach(@lines){
 		#print "found type: $1\n";
 		$type = $1;
 	}
+	#static marker
+	if ($line =~ /^\s*[\*]?\s*\@static/g) {
+		$static = 1;
+	}
 	if($line =~ /^\s*\*\//) {
 		#print "ending doc comment\n";
 		#expect function or property declaration on next line
@@ -209,8 +214,10 @@ foreach(@lines){
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
 			#if singleton, members are static
 			#ie: they are called on the class name directly
-			#we will simply check for the existence od this field
-			if ($singleton) {
+			#this can also be explicitly declared on methods or properties
+			#Note: it is not possible to have non-static methods on singletons
+			#since singletons are just POJOs they cannot be instantiated
+			if ($singleton || $static) {
 				$tagStr = $tagStr.$TAB.'static:true'
 			}
 			#add description if any
@@ -260,6 +267,7 @@ sub resetVars {
 	$sig = "";
 	$getDescr = 0;
 	$singleton = 0;
+	$static = 0;
 	$descr = "";
 }
 
