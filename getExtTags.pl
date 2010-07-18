@@ -32,6 +32,7 @@ my $method = "";
 my $return = "";
 my $getDescr = 0;
 my $descr = "";
+my $singleton = 0;
 
 foreach(@lines){
 	chomp;
@@ -58,6 +59,7 @@ foreach(@lines){
 	}
 	#if the class is singleton there will not be a constructor
 	if($line =~ /^\s*[\*]?\s*\@singleton/) {
+		$singleton = 1;
 		$getConstructor = 0;
 	}
 	# parse class 
@@ -75,6 +77,10 @@ foreach(@lines){
 			$tagStr = $class.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$parent_class;
 			if ($inherit ne '') {
 				$tagStr = $tagStr.$TAB.'inherits:'.$inherit;
+			}
+			#if 'singleton' (actually an object literal)
+			if ($singleton) {
+				$tagStr = $tagStr.$TAB.'singleton:true'
 			}
 			#add link for help
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
@@ -166,7 +172,7 @@ foreach(@lines){
                     my $param_type = $params[$p]{'type'};
 
 					if ($isfirstparam) {
-						$sig .= '<+'.$param_name.":".$param_type.'+>' ;
+						$sig .= '' ;
 						$isfirstparam = 0;
 					} else {
 						$sig .= ", " . '<+'.$param_name.":".$param_type.'+>' ;
@@ -201,7 +207,12 @@ foreach(@lines){
 
 			#add full class name as link for help docs
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
-
+			#if singleton, members are static
+			#ie: they are called on the class name directly
+			#we will simply check for the existence od this field
+			if ($singleton) {
+				$tagStr = $tagStr.$TAB.'static:true'
+			}
 			#add description if any
 			if ($descr) {
 				$tagStr = $tagStr.$TAB.'descr:'.$descr;
@@ -248,6 +259,7 @@ sub resetVars {
 	$inherit = "";
 	$sig = "";
 	$getDescr = 0;
+	$singleton = 0;
 	$descr = "";
 }
 
