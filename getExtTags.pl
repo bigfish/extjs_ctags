@@ -159,7 +159,12 @@ foreach(@lines){
 				$typeToken = "v";#f = field?
 			}
 			#construct tag
-			$tagStr = $mName.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$class;
+			if ($mName =~ "constructor") {
+				$typeToken = "f";
+				$tagStr = $class.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$class;
+			} else {
+				$tagStr = $mName.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$class;
+			}
 			if (length($sig) > 0) {
 				$tagStr = $tagStr.$TAB.'signature:'.$sig;
 			}

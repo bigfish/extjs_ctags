@@ -7,13 +7,15 @@
 A	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   A: 65,$/;"	v	class:EventManager	link:Ext.EventManager
 A	/home/david/ext/ext-3.2.1/src/dd/DDCore.js	/^    A: "A"$/;"	v	class:DragDrop	link:Ext.dd.DragDrop
 ALT	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   ALT: 18,$/;"	v	class:EventManager	link:Ext.EventManager
-ARRAY(0x2390df0)AUTO	/home/david/ext/ext-3.2.1/src/data/Types.js	/^        AUTO: {$/;"	v	class:Types	type:Object	link:Ext.data.Types
+ARRAY(0x217adf0)AUTO	/home/david/ext/ext-3.2.1/src/data/Types.js	/^        AUTO: {$/;"	v	class:Types	type:Object	link:Ext.data.Types
 AbsoluteLayout	/home/david/ext/ext-3.2.1/src/widgets/layout/AbsoluteLayout.js	/^Ext.layout.AbsoluteLayout = Ext.extend(Ext.layout.AnchorLayout, {$/;"	c	class:layout	inherits:Ext.layout.AnchorLayout	link:Ext.layout.AbsoluteLayout
 AbsoluteLayoutAdapter	/home/david/ext/ext-3.2.1/src/widgets/SplitBar.js	/^Ext.SplitBar.AbsoluteLayoutAdapter = function(container){$/;"	c	class:SplitBar	link:Ext.SplitBar.AbsoluteLayoutAdapter
 AbsoluteLayoutAdapter	/home/david/ext/ext-3.2.1/src/widgets/SplitBar.js	/^Ext.SplitBar.AbsoluteLayoutAdapter = function(container){$/;"	f	class:SplitBar	link:Ext.SplitBar.AbsoluteLayoutAdapter
+AbstractSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/grid/AbstractSelectionModel.js	/^    constructor : function(){$/;"	f	class:AbstractSelectionModel	signature:()	type:Object	link:Ext.grid.AbstractSelectionModel
 AbstractSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/grid/AbstractSelectionModel.js	/^Ext.grid.AbstractSelectionModel = Ext.extend(Ext.util.Observable,  {$/;"	c	class:grid	inherits:Ext.util.Observable	link:Ext.grid.AbstractSelectionModel
 Accordion	/home/david/ext/ext-3.2.1/src/widgets/layout/AccordionLayout.js	/^Ext.layout.AccordionLayout = Ext.extend(Ext.layout.FitLayout, {$/;"	c	class:layout	inherits:Ext.layout.FitLayout	link:Ext.layout.AccordionLayout
 AccordionLayout	/home/david/ext/ext-3.2.1/src/widgets/layout/AccordionLayout.js	/^Ext.layout.AccordionLayout = Ext.extend(Ext.layout.FitLayout, {$/;"	c	class:layout	inherits:Ext.layout.FitLayout	link:Ext.layout.AccordionLayout
+Action	/home/david/ext/ext-3.2.1/src/widgets/Action.js	/^    constructor : function(config){$/;"	f	class:Action	signature:()	link:Ext.Action
 Action	/home/david/ext/ext-3.2.1/src/widgets/Action.js	/^Ext.Action = Ext.extend(Object, {$/;"	c	class:Ext	inherits:Object	link:Ext.Action
 Action	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^Ext.form.Action = function(form, options){$/;"	c	class:form	link:Ext.form.Action
 Action	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^Ext.form.Action = function(form, options){$/;"	f	class:form	link:Ext.form.Action
@@ -21,6 +23,7 @@ Ajax	/home/david/ext/ext-3.2.1/src/ext-core/src/data/Connection.js	/^Ext.Ajax = 
 AnchorLayout	/home/david/ext/ext-3.2.1/src/widgets/layout/AnchorLayout.js	/^Ext.layout.AnchorLayout = Ext.extend(Ext.layout.ContainerLayout, {$/;"	c	class:layout	inherits:Ext.layout.ContainerLayout	link:Ext.layout.AnchorLayout
 Api	/home/david/ext/ext-3.2.1/src/data/Api.js	/^Ext.data.Api = (function() {$/;"	c	class:data	link:Ext.data.Api
 ArrayReader	/home/david/ext/ext-3.2.1/src/data/ArrayReader.js	/^Ext.data.ArrayReader = Ext.extend(Ext.data.JsonReader, {$/;"	c	class:data	inherits:Ext.data.JsonReader	link:Ext.data.ArrayReader
+ArrayStore	/home/david/ext/ext-3.2.1/src/data/ArrayStore.js	/^    constructor: function(config){$/;"	f	class:ArrayStore	signature:(<+config:Object+>)	link:Ext.data.ArrayStore
 ArrayStore	/home/david/ext/ext-3.2.1/src/data/ArrayStore.js	/^Ext.data.ArrayStore = Ext.extend(Ext.data.Store, {$/;"	c	class:data	inherits:Ext.data.Store	link:Ext.data.ArrayStore
 AsyncTreeNode	/home/david/ext/ext-3.2.1/src/widgets/tree/AsyncTreeNode.js	/^ Ext.tree.AsyncTreeNode = function(config){$/;"	c	class:tree	link:Ext.tree.AsyncTreeNode
 AsyncTreeNode	/home/david/ext/ext-3.2.1/src/widgets/tree/AsyncTreeNode.js	/^ Ext.tree.AsyncTreeNode = function(config){$/;"	f	class:tree	link:Ext.tree.AsyncTreeNode
@@ -35,7 +38,8 @@ BOOLEAN	/home/david/ext/ext-3.2.1/src/data/Types.js	/^        BOOLEAN: this.BOOL
 BarChart	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.BarChart = Ext.extend(Ext.chart.CartesianChart, {$/;"	c	class:chart	inherits:Ext.chart.CartesianChart	link:Ext.chart.BarChart
 BarSeries	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.BarSeries = Ext.extend(Ext.chart.CartesianSeries, {$/;"	c	class:chart	inherits:Ext.chart.CartesianSeries	link:Ext.chart.BarSeries
 BaseItem	/home/david/ext/ext-3.2.1/src/widgets/menu/BaseItem.js	/^Ext.menu.BaseItem = Ext.extend(Ext.Component, {$/;"	c	class:menu	inherits:Ext.Component	link:Ext.menu.BaseItem
-BasicForm	/home/david/ext/ext-3.2.1/src/widgets/form/BasicForm.js	/^Ext.form.BasicForm = Ext.extend(Ext.util.Observable, {$/;"	c	class:Ext	inherits:Ext.util.Observable	link:Ext.form.BasicForm
+BasicForm	/home/david/ext/ext-3.2.1/src/widgets/form/BasicForm.js	/^    constructor: function(el, config){$/;"	f	class:BasicForm	signature:(<+config:Object+>, <+el:Mixed+>)	link:Ext.form.BasicForm
+BasicForm	/home/david/ext/ext-3.2.1/src/widgets/form/BasicForm.js	/^    constructor: function(el, config){$/;"	f	class:BasicForm	signature:(<+config:Object+>, <+el:Mixed+>)	link:Ext.form.BasicForm
 BasicForm	/home/david/ext/ext-3.2.1/src/widgets/form/BasicForm.js	/^Ext.form.BasicForm = Ext.extend(Ext.util.Observable, {$/;"	c	class:form	inherits:Ext.util.Observable	link:Ext.form.BasicForm
 BasicLayoutAdapter	/home/david/ext/ext-3.2.1/src/widgets/SplitBar.js	/^Ext.SplitBar.BasicLayoutAdapter = function(){$/;"	c	class:SplitBar	link:Ext.SplitBar.BasicLayoutAdapter
 BasicLayoutAdapter	/home/david/ext/ext-3.2.1/src/widgets/SplitBar.js	/^Ext.SplitBar.BasicLayoutAdapter = function(){$/;"	f	class:SplitBar	link:Ext.SplitBar.BasicLayoutAdapter
@@ -58,6 +62,7 @@ CardLayout	/home/david/ext/ext-3.2.1/src/widgets/layout/CardLayout.js	/^Ext.layo
 CartesianChart	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.CartesianChart = Ext.extend(Ext.chart.Chart, {$/;"	c	class:chart	inherits:Ext.chart.Chart	link:Ext.chart.CartesianChart
 CartesianSeries	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.CartesianSeries = Ext.extend(Ext.chart.Series, {$/;"	c	class:chart	inherits:Ext.chart.Series	link:Ext.chart.CartesianSeries
 CategoryAxis	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.CategoryAxis = Ext.extend(Ext.chart.Axis, {$/;"	c	class:chart	inherits:Ext.chart.Axis	link:Ext.chart.CategoryAxis
+CellSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/grid/CellSelectionModel.js	/^    constructor : function(config){$/;"	f	class:CellSelectionModel	signature:(<+config:Object+>)	link:Ext.grid.CellSelectionModel
 CellSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/grid/CellSelectionModel.js	/^Ext.grid.CellSelectionModel = Ext.extend(Ext.grid.AbstractSelectionModel,  {$/;"	c	class:grid	inherits:Ext.grid.AbstractSelectionModel	link:Ext.grid.CellSelectionModel
 Chart	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^ Ext.chart.Chart = Ext.extend(Ext.FlashComponent, {$/;"	c	class:chart	inherits:Ext.FlashComponent	link:Ext.chart.Chart
 CheckItem	/home/david/ext/ext-3.2.1/src/widgets/menu/CheckItem.js	/^Ext.menu.CheckItem = Ext.extend(Ext.menu.Item, {$/;"	c	class:menu	inherits:Ext.menu.Item	link:Ext.menu.CheckItem
@@ -69,9 +74,11 @@ ClickRepeater	/home/david/ext/ext-3.2.1/src/util/ClickRepeater.js	/^Ext.util.Cli
 ColorMenu	/home/david/ext/ext-3.2.1/src/widgets/menu/ColorMenu.js	/^ Ext.menu.ColorMenu = Ext.extend(Ext.menu.Menu, {$/;"	c	class:menu	inherits:Ext.menu.Menu	link:Ext.menu.ColorMenu
 ColorPalette	/home/david/ext/ext-3.2.1/src/widgets/ColorPalette.js	/^Ext.ColorPalette = Ext.extend(Ext.Component, {$/;"	c	class:Ext	inherits:Ext.Component	link:Ext.ColorPalette
 Column	/home/david/ext/ext-3.2.1/src/widgets/grid/Column.js	/^Ext.grid.Column = Ext.extend(Object, {$/;"	c	class:grid	inherits:Object	link:Ext.grid.Column
+Column	/home/david/ext/ext-3.2.1/src/widgets/list/Column.js	/^    constructor : function(c){$/;"	f	class:Column	signature:()	link:Ext.list.Column
 Column	/home/david/ext/ext-3.2.1/src/widgets/list/Column.js	/^Ext.list.Column = Ext.extend(Object, {$/;"	c	class:list	inherits:Object	link:Ext.list.Column
 ColumnChart	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.ColumnChart = Ext.extend(Ext.chart.CartesianChart, {$/;"	c	class:chart	inherits:Ext.chart.CartesianChart	link:Ext.chart.ColumnChart
 ColumnLayout	/home/david/ext/ext-3.2.1/src/widgets/layout/ColumnLayout.js	/^Ext.layout.ColumnLayout = Ext.extend(Ext.layout.ContainerLayout, {$/;"	c	class:layout	inherits:Ext.layout.ContainerLayout	link:Ext.layout.ColumnLayout
+ColumnModel	/home/david/ext/ext-3.2.1/src/widgets/grid/ColumnModel.js	/^    constructor : function(config){$/;"	f	class:ColumnModel	signature:()	link:Ext.grid.ColumnModel
 ColumnModel	/home/david/ext/ext-3.2.1/src/widgets/grid/ColumnModel.js	/^Ext.grid.ColumnModel = Ext.extend(Ext.util.Observable, {$/;"	c	class:grid	inherits:Ext.util.Observable	link:Ext.grid.ColumnModel
 ColumnResizer	/home/david/ext/ext-3.2.1/src/widgets/list/ColumnResizer.js	/^Ext.list.ColumnResizer = Ext.extend(Ext.util.Observable, {$/;"	c	class:ListView	inherits:Ext.util.Observable	link:Ext.list.ColumnResizer
 ColumnResizer	/home/david/ext/ext-3.2.1/src/widgets/list/ColumnResizer.js	/^Ext.list.ColumnResizer = Ext.extend(Ext.util.Observable, {$/;"	c	class:list	inherits:Ext.util.Observable	link:Ext.list.ColumnResizer
@@ -80,6 +87,7 @@ ComboBox	/home/david/ext/ext-3.2.1/src/widgets/form/Combo.js	/^Ext.form.ComboBox
 Component	/home/david/ext/ext-3.2.1/src/widgets/Component.js	/^Ext.Component = function(config){$/;"	c	class:Ext	link:Ext.Component
 Component	/home/david/ext/ext-3.2.1/src/widgets/Component.js	/^Ext.Component = function(config){$/;"	f	class:Ext	link:Ext.Component
 ComponentMgr	/home/david/ext/ext-3.2.1/src/widgets/ComponentMgr.js	/^Ext.ComponentMgr = function(){$/;"	c	class:Ext	link:Ext.ComponentMgr
+CompositeElement	/home/david/ext/ext-3.2.1/src/core/CompositeElement.js	/^    constructor : function(els, root){$/;"	f	class:CompositeElement	signature:()	link:Ext.CompositeElement
 CompositeElement	/home/david/ext/ext-3.2.1/src/core/CompositeElement.js	/^Ext.CompositeElement = Ext.extend(Ext.CompositeElementLite, {$/;"	c	class:Ext	inherits:Ext.CompositeElementLite	link:Ext.CompositeElement
 CompositeElementLite	/home/david/ext/ext-3.2.1/src/ext-core/src/core/CompositeElementLite.js	/^Ext.CompositeElementLite = function(els, root){$/;"	c	class:Ext	link:Ext.CompositeElementLite
 CompositeElementLite	/home/david/ext/ext-3.2.1/src/ext-core/src/core/CompositeElementLite.js	/^Ext.CompositeElementLite = function(els, root){$/;"	f	class:Ext	link:Ext.CompositeElementLite
@@ -116,14 +124,18 @@ DateColumn	/home/david/ext/ext-3.2.1/src/widgets/list/Column.js	/^Ext.list.DateC
 DateField	/home/david/ext/ext-3.2.1/src/widgets/form/DateField.js	/^Ext.form.DateField = Ext.extend(Ext.form.TriggerField,  {$/;"	c	class:form	inherits:Ext.form.TriggerField	link:Ext.form.DateField
 DateMenu	/home/david/ext/ext-3.2.1/src/widgets/menu/DateMenu.js	/^ Ext.menu.DateMenu = Ext.extend(Ext.menu.Menu, {$/;"	c	class:menu	inherits:Ext.menu.Menu	link:Ext.menu.DateMenu
 DatePicker	/home/david/ext/ext-3.2.1/src/widgets/DatePicker.js	/^Ext.DatePicker = Ext.extend(Ext.BoxComponent, {$/;"	c	class:Ext	inherits:Ext.BoxComponent	link:Ext.DatePicker
+DefaultSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/tree/TreeSelectionModel.js	/^    constructor : function(config){$/;"	f	class:DefaultSelectionModel	signature:()	link:Ext.tree.DefaultSelectionModel
 DefaultSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/tree/TreeSelectionModel.js	/^Ext.tree.DefaultSelectionModel = Ext.extend(Ext.util.Observable, {$/;"	c	class:tree	inherits:Ext.util.Observable	link:Ext.tree.DefaultSelectionModel
 DelayedTask	/home/david/ext/ext-3.2.1/src/ext-core/src/util/DelayedTask.js	/^Ext.util.DelayedTask = function(fn, scope, args){$/;"	c	class:util	link:Ext.util.DelayedTask
 DelayedTask	/home/david/ext/ext-3.2.1/src/ext-core/src/util/DelayedTask.js	/^Ext.util.DelayedTask = function(fn, scope, args){$/;"	f	class:util	link:Ext.util.DelayedTask
 Direct	/home/david/ext/ext-3.2.1/src/direct/Direct.js	/^Ext.Direct = Ext.extend(Ext.util.Observable, {$/;"	c	class:Ext	inherits:Ext.util.Observable	link:Ext.Direct
+DirectLoad	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^    constructor: function(form, opts) {$/;"	f	class:DirectLoad	signature:()	link:Ext.form.Action.DirectLoad
 DirectLoad	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^Ext.form.Action.DirectLoad = Ext.extend(Ext.form.Action.Load, {$/;"	c	class:Action	inherits:Ext.form.Action.Load	link:Ext.form.Action.DirectLoad
 DirectProxy	/home/david/ext/ext-3.2.1/src/data/DirectProxy.js	/^Ext.data.DirectProxy = function(config){$/;"	c	class:data	link:Ext.data.DirectProxy
 DirectProxy	/home/david/ext/ext-3.2.1/src/data/DirectProxy.js	/^Ext.data.DirectProxy = function(config){$/;"	f	class:data	link:Ext.data.DirectProxy
+DirectStore	/home/david/ext/ext-3.2.1/src/data/DirectStore.js	/^    constructor : function(config){$/;"	f	class:DirectStore	signature:(<+config:Object+>)	link:Ext.data.DirectStore
 DirectStore	/home/david/ext/ext-3.2.1/src/data/DirectStore.js	/^Ext.data.DirectStore = Ext.extend(Ext.data.Store, {$/;"	c	class:data	inherits:Ext.data.Store	link:Ext.data.DirectStore
+DirectSubmit	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^    constructor : function(form, opts) {$/;"	f	class:DirectSubmit	signature:()	link:Ext.form.Action.DirectSubmit
 DirectSubmit	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^Ext.form.Action.DirectSubmit = Ext.extend(Ext.form.Action.Submit, {$/;"	c	class:Action	inherits:Ext.form.Action.Submit	link:Ext.form.Action.DirectSubmit
 DisplayField	/home/david/ext/ext-3.2.1/src/widgets/form/DisplayField.js	/^Ext.form.DisplayField = Ext.extend(Ext.form.Field,  {$/;"	c	class:form	inherits:Ext.form.Field	link:Ext.form.DisplayField
 DomHelper	/home/david/ext/ext-3.2.1/src/ext-core/src/core/DomHelper.js	/^Ext.DomHelper = function(){$/;"	c	class:Ext	link:Ext.DomHelper
@@ -154,13 +166,18 @@ Element	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Element.js	/^Ext.Element
 ElementWrapper	/home/david/ext/ext-3.2.1/src/dd/DDCore.js	/^        ElementWrapper: function(el) {$/;"	m	class:ElementWrapper	signature:()	link:Ext.dd.DragDropMgr.ElementWrapper
 Error	/home/david/ext/ext-3.2.1/src/core/Error.js	/^Ext.Error = function(message) {$/;"	c	class:Ext	link:Ext.Error
 Error	/home/david/ext/ext-3.2.1/src/core/Error.js	/^Ext.Error = function(message) {$/;"	f	class:Ext	link:Ext.Error
+Error	/home/david/ext/ext-3.2.1/src/data/Api.js	/^    constructor : function(message, arg) {$/;"	f	class:Error	signature:()	link:Ext.data.Api.Error
 Error	/home/david/ext/ext-3.2.1/src/data/Api.js	/^Ext.data.Api.Error = Ext.extend(Ext.Error, {$/;"	c	class:Api	inherits:Ext.Error	link:Ext.data.Api.Error
+Error	/home/david/ext/ext-3.2.1/src/data/DataProxy.js	/^    constructor : function(message, arg) {$/;"	f	class:Error	signature:(<+arg:Record/Record[]+>, <+message:String+>)	link:Ext.data.DataProxy.Error
 Error	/home/david/ext/ext-3.2.1/src/data/DataProxy.js	/^Ext.data.DataProxy.Error = Ext.extend(Ext.Error, {$/;"	c	class:DataProxy	inherits:Ext.Error	link:Ext.data.DataProxy.Error
+Error	/home/david/ext/ext-3.2.1/src/data/DataReader.js	/^    constructor : function(message, arg) {$/;"	f	class:Error	signature:()	link:Ext.data.DataReader.Error
 Error	/home/david/ext/ext-3.2.1/src/data/DataReader.js	/^Ext.data.DataReader.Error = Ext.extend(Ext.Error, {$/;"	c	class:DataReader	inherits:Ext.Error	link:Ext.data.DataReader.Error
+Error	/home/david/ext/ext-3.2.1/src/data/JsonReader.js	/^    constructor : function(message, arg) {$/;"	f	class:Error	signature:()	link:Ext.data.JsonReader.Error
 Error	/home/david/ext/ext-3.2.1/src/data/JsonReader.js	/^Ext.data.JsonReader.Error = Ext.extend(Ext.Error, {$/;"	c	class:JsonReader	inherits:Ext.Error	link:Ext.data.JsonReader.Error
 Error	/home/david/ext/ext-3.2.1/src/data/Store.js	/^Ext.data.Store.Error = Ext.extend(Ext.Error, {$/;"	c	class:Store	inherits:Ext.Error	link:Ext.data.Store.Error
 EventManager	/home/david/ext/ext-3.2.1/src/ext-core/src/core/EventManager.js	/^Ext.EventManager = function(){$/;"	c	class:Ext	link:Ext.EventManager
 EventObject	/home/david/ext/ext-3.2.1/src/ext-core/src/core/EventManager.js	/^Ext.EventObject = function(){$/;"	c	class:Ext	link:Ext.EventObject
+Ext	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Ext.js	/^    constructor: function(config) {$/;"	f	class:Ext	signature:()	link:Ext
 Ext	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Ext.js	/^Ext = {$/;"	c	class:	link:Ext
 F	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   F: 70,$/;"	v	class:EventManager	link:Ext.EventManager
 F1	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   F1: 112,$/;"	v	class:EventManager	link:Ext.EventManager
@@ -178,6 +195,7 @@ F9	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   F9: 120,$/;"	v	c
 FIVE	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   FIVE: 53,$/;"	v	class:EventManager	link:Ext.EventManager
 FLOAT	/home/david/ext/ext-3.2.1/src/data/Types.js	/^        FLOAT: {$/;"	v	class:Types	type:Object	link:Ext.data.Types
 FOUR	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   FOUR: 52,$/;"	v	class:EventManager	link:Ext.EventManager
+Field	/home/david/ext/ext-3.2.1/src/data/DataField.js	/^    constructor : function(config){$/;"	f	class:Field	signature:()	link:Ext.data.Field
 Field	/home/david/ext/ext-3.2.1/src/data/DataField.js	/^Ext.data.Field = Ext.extend(Object, {$/;"	c	class:data	inherits:Object	link:Ext.data.Field
 Field	/home/david/ext/ext-3.2.1/src/widgets/form/Field.js	/^Ext.form.Field = Ext.extend(Ext.BoxComponent,  {$/;"	c	class:form	inherits:Ext.BoxComponent	link:Ext.form.Field
 FieldSet	/home/david/ext/ext-3.2.1/src/widgets/form/FieldSet.js	/^Ext.form.FieldSet = Ext.extend(Ext.Panel, {$/;"	c	class:form	inherits:Ext.Panel	link:Ext.form.FieldSet
@@ -191,6 +209,7 @@ GridDragZone	/home/david/ext/ext-3.2.1/src/widgets/grid/GridDD.js	/^Ext.grid.Gri
 GridDragZone	/home/david/ext/ext-3.2.1/src/widgets/grid/GridDD.js	/^Ext.grid.GridDragZone = function(grid, config){$/;"	f	class:grid	link:Ext.grid.GridDragZone
 GridPanel	/home/david/ext/ext-3.2.1/src/widgets/grid/GridPanel.js	/^Ext.grid.GridPanel = Ext.extend(Ext.Panel, {$/;"	c	class:grid	inherits:Ext.Panel	link:Ext.grid.GridPanel
 GridView	/home/david/ext/ext-3.2.1/src/widgets/grid/GridView.js	/^Ext.grid.GridView = Ext.extend(Ext.util.Observable, {$/;"	c	class:grid	inherits:Ext.util.Observable	link:Ext.grid.GridView
+GroupingStore	/home/david/ext/ext-3.2.1/src/data/GroupingStore.js	/^    constructor: function(config) {$/;"	f	class:GroupingStore	signature:(<+config:Object+>)	link:Ext.data.GroupingStore
 GroupingStore	/home/david/ext/ext-3.2.1/src/data/GroupingStore.js	/^Ext.data.GroupingStore = Ext.extend(Ext.data.Store, {$/;"	c	class:data	inherits:Ext.data.Store	link:Ext.data.GroupingStore
 GroupingView	/home/david/ext/ext-3.2.1/src/widgets/grid/GroupingView.js	/^Ext.grid.GroupingView = Ext.extend(Ext.grid.GridView, {$/;"	c	class:grid	inherits:Ext.grid.GridView	link:Ext.grid.GroupingView
 H	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   H: 72,$/;"	v	class:EventManager	link:Ext.EventManager
@@ -215,6 +234,7 @@ JSON	/home/david/ext/ext-3.2.1/src/ext-core/src/util/JSON.js	/^Ext.util.JSON = n
 JsonProvider	/home/david/ext/ext-3.2.1/src/direct/JsonProvider.js	/^Ext.direct.JsonProvider = Ext.extend(Ext.direct.Provider, {$/;"	c	class:direct	inherits:Ext.direct.Provider	link:Ext.direct.JsonProvider
 JsonReader	/home/david/ext/ext-3.2.1/src/data/JsonReader.js	/^Ext.data.JsonReader = function(meta, recordType){$/;"	c	class:data	link:Ext.data.JsonReader
 JsonReader	/home/david/ext/ext-3.2.1/src/data/JsonReader.js	/^Ext.data.JsonReader = function(meta, recordType){$/;"	f	class:data	link:Ext.data.JsonReader
+JsonStore	/home/david/ext/ext-3.2.1/src/data/JsonStore.js	/^    constructor: function(config){$/;"	f	class:JsonStore	signature:(<+config:Object+>)	link:Ext.data.JsonStore
 JsonStore	/home/david/ext/ext-3.2.1/src/data/JsonStore.js	/^Ext.data.JsonStore = Ext.extend(Ext.data.Store, {$/;"	c	class:data	inherits:Ext.data.Store	link:Ext.data.JsonStore
 JsonWriter	/home/david/ext/ext-3.2.1/src/data/JsonWriter.js	/^Ext.data.JsonWriter = Ext.extend(Ext.data.DataWriter, {$/;"	c	class:data	inherits:Ext.data.DataWriter	link:Ext.data.JsonWriter
 K	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   K: 75,$/;"	v	class:EventManager	link:Ext.EventManager
@@ -250,6 +270,7 @@ MessageBox	/home/david/ext/ext-3.2.1/src/widgets/MessageBox.js	/^Ext.MessageBox 
 MixedCollection	/home/david/ext/ext-3.2.1/src/util/MixedCollection.js	/^Ext.util.MixedCollection = function(allowFunctions, keyFn){$/;"	c	class:util	link:Ext.util.MixedCollection
 MixedCollection	/home/david/ext/ext-3.2.1/src/util/MixedCollection.js	/^Ext.util.MixedCollection = function(allowFunctions, keyFn){$/;"	f	class:util	link:Ext.util.MixedCollection
 Msg	/home/david/ext/ext-3.2.1/src/widgets/MessageBox.js	/^Ext.MessageBox = function(){$/;"	c	class:Ext	link:Ext.MessageBox
+MultiSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/tree/TreeSelectionModel.js	/^    constructor : function(config){$/;"	f	class:MultiSelectionModel	signature:()	link:Ext.tree.MultiSelectionModel
 MultiSelectionModel	/home/david/ext/ext-3.2.1/src/widgets/tree/TreeSelectionModel.js	/^Ext.tree.MultiSelectionModel = Ext.extend(Ext.util.Observable, {$/;"	c	class:tree	inherits:Ext.util.Observable	link:Ext.tree.MultiSelectionModel
 MultiSlider	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^Ext.slider.MultiSlider = Ext.extend(Ext.BoxComponent, {$/;"	c	class:slider	inherits:Ext.BoxComponent	link:Ext.slider.MultiSlider
 N	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   N: 78,$/;"	v	class:EventManager	link:Ext.EventManager
@@ -281,6 +302,7 @@ O	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   O: 79,$/;"	v	clas
 OK	/home/david/ext/ext-3.2.1/src/widgets/MessageBox.js	/^        OK : {ok:true},$/;"	v	class:MessageBox	type:Object	link:Ext.MessageBox
 OKCANCEL	/home/david/ext/ext-3.2.1/src/widgets/MessageBox.js	/^        OKCANCEL : {ok:true, cancel:true},$/;"	v	class:MessageBox	type:Object	link:Ext.MessageBox
 ONE	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   ONE: 49,$/;"	v	class:EventManager	link:Ext.EventManager
+Observable	/home/david/ext/ext-3.2.1/src/ext-core/src/util/Observable.js	/^    constructor: function(config) {$/;"	f	class:Observable	signature:()	link:Ext.util.Observable
 P	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   P: 80,$/;"	v	class:EventManager	link:Ext.EventManager
 PAGE_DOWN	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   PAGE_DOWN: 34,$/;"	v	class:EventManager	link:Ext.EventManager
 PAGE_UP	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   PAGE_UP: 33,$/;"	v	class:EventManager	link:Ext.EventManager
@@ -293,13 +315,16 @@ PanelProxy	/home/david/ext/ext-3.2.1/src/widgets/PanelDD.js	/^Ext.dd.PanelProxy 
 PanelProxy	/home/david/ext/ext-3.2.1/src/widgets/PanelDD.js	/^Ext.dd.PanelProxy = function(panel, config){$/;"	f	class:dd	link:Ext.dd.PanelProxy
 PieChart	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.PieChart = Ext.extend(Ext.chart.Chart, {$/;"	c	class:chart	inherits:Ext.chart.Chart	link:Ext.chart.PieChart
 PieSeries	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.PieSeries = Ext.extend(Ext.chart.Series, {$/;"	c	class:chart	inherits:Ext.chart.Series	link:Ext.chart.PieSeries
+PollingProvider	/home/david/ext/ext-3.2.1/src/direct/PollingProvider.js	/^    constructor : function(config){$/;"	f	class:PollingProvider	signature:()	link:Ext.direct.PollingProvider
 PollingProvider	/home/david/ext/ext-3.2.1/src/direct/PollingProvider.js	/^Ext.direct.PollingProvider = Ext.extend(Ext.direct.JsonProvider, {$/;"	c	class:direct	inherits:Ext.direct.JsonProvider	link:Ext.direct.PollingProvider
 ProgressBar	/home/david/ext/ext-3.2.1/src/widgets/ProgressBar.js	/^Ext.ProgressBar = Ext.extend(Ext.BoxComponent, {$/;"	c	class:Ext	inherits:Ext.BoxComponent	link:Ext.ProgressBar
 PropertyColumnModel	/home/david/ext/ext-3.2.1/src/widgets/grid/PropertyGrid.js	/^Ext.grid.PropertyColumnModel = Ext.extend(Ext.grid.ColumnModel, {$/;"	c	class:grid	inherits:Ext.grid.ColumnModel	link:Ext.grid.PropertyColumnModel
 PropertyGrid	/home/david/ext/ext-3.2.1/src/widgets/grid/PropertyGrid.js	/^Ext.grid.PropertyGrid = Ext.extend(Ext.grid.EditorGridPanel, {$/;"	c	class:grid	inherits:Ext.grid.EditorGridPanel	link:Ext.grid.PropertyGrid
 PropertyRecord	/home/david/ext/ext-3.2.1/src/widgets/grid/PropertyGrid.js	/^Ext.grid.PropertyRecord = Ext.data.Record.create([$/;"	c	class:grid	link:Ext.grid.PropertyRecord
 PropertyRecordFrame	/home/david/ext/ext-3.2.1/src/dd/DDCore.js	/^    createFrame: function() {$/;"	m	class:DDProxy	signature:()	link:Ext.dd.DDProxy
+PropertyStore	/home/david/ext/ext-3.2.1/src/widgets/grid/PropertyGrid.js	/^    constructor : function(grid, source){$/;"	f	class:PropertyStore	signature:(<+source:Object+>, <+grid:Ext.grid.Grid+>)	link:Ext.grid.PropertyStore
 PropertyStore	/home/david/ext/ext-3.2.1/src/widgets/grid/PropertyGrid.js	/^Ext.grid.PropertyStore = Ext.extend(Ext.util.Observable, {$/;"	c	class:grid	inherits:Ext.util.Observable	link:Ext.grid.PropertyStore
+Provider	/home/david/ext/ext-3.2.1/src/direct/Provider.js	/^    constructor : function(config){$/;"	f	class:Provider	signature:()	link:Ext.direct.Provider
 Provider	/home/david/ext/ext-3.2.1/src/direct/Provider.js	/^Ext.direct.Provider = Ext.extend(Ext.util.Observable, {    $/;"	c	class:direct	inherits:Ext.util.Observable	link:Ext.direct.Provider
 Provider	/home/david/ext/ext-3.2.1/src/state/Provider.js	/^Ext.state.Provider = function(){$/;"	c	class:state	link:Ext.state.Provider
 Provider	/home/david/ext/ext-3.2.1/src/state/Provider.js	/^Ext.state.Provider = function(){$/;"	f	class:state	link:Ext.state.Provider
@@ -320,6 +345,7 @@ Registry	/home/david/ext/ext-3.2.1/src/dd/Registry.js	/^Ext.dd.Registry = functi
 RemotingProvider	/home/david/ext/ext-3.2.1/src/direct/RemotingProvider.js	/^Ext.direct.RemotingProvider = Ext.extend(Ext.direct.JsonProvider, {       $/;"	c	class:direct	inherits:Ext.direct.JsonProvider	link:Ext.direct.RemotingProvider
 Request	/home/david/ext/ext-3.2.1/src/data/Request.js	/^Ext.data.Request = function(params) {$/;"	c	class:data	link:Ext.data.Request
 Request	/home/david/ext/ext-3.2.1/src/data/Request.js	/^Ext.data.Request = function(params) {$/;"	f	class:data	link:Ext.data.Request
+Resizable	/home/david/ext/ext-3.2.1/src/widgets/Resizable.js	/^    constructor: function(el, config){$/;"	f	class:Resizable	signature:(<+config:Object+>, <+el:Mixed+>)	link:Ext.Resizable
 Resizable	/home/david/ext/ext-3.2.1/src/widgets/Resizable.js	/^Ext.Resizable = Ext.extend(Ext.util.Observable, {$/;"	c	class:Ext	inherits:Ext.util.Observable	link:Ext.Resizable
 Response	/home/david/ext/ext-3.2.1/src/data/Response.js	/^Ext.data.Response = function(params) {$/;"	c	class:data	link:Ext.data.Response
 Response	/home/david/ext/ext-3.2.1/src/data/Response.js	/^Ext.data.Response = function(params) {$/;"	f	class:data	link:Ext.data.Response
@@ -342,9 +368,10 @@ Series	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.Series =
 Series	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.Series = function(config) { Ext.apply(this, config); };$/;"	f	class:chart	link:Ext.chart.Series
 Shadow	/home/david/ext/ext-3.2.1/src/widgets/Shadow.js	/^Ext.Shadow = function(config){$/;"	c	class:Ext	link:Ext.Shadow
 Shadow	/home/david/ext/ext-3.2.1/src/widgets/Shadow.js	/^Ext.Shadow = function(config){$/;"	f	class:Ext	link:Ext.Shadow
-SimpleStore	/home/david/ext/ext-3.2.1/src/data/ArrayStore.js	/^Ext.data.ArrayStore = Ext.extend(Ext.data.Store, {$/;"	c	class:data	inherits:Ext.data.Store	link:Ext.data.ArrayStore
+SimpleStore	/home/david/ext/ext-3.2.1/src/data/ArrayStore.js	/^    constructor: function(config){$/;"	f	class:ArrayStore	signature:(<+config:Object+>)	link:Ext.data.ArrayStore
+SingleSlider	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^    constructor: function(config) {$/;"	f	class:SingleSlider	signature:()	link:Ext.slider.SingleSlider
 SingleSlider	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^Ext.slider.SingleSlider = Ext.extend(Ext.slider.MultiSlider, {$/;"	c	class:slider	inherits:Ext.slider.MultiSlider	link:Ext.slider.SingleSlider
-Slider	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^Ext.slider.SingleSlider = Ext.extend(Ext.slider.MultiSlider, {$/;"	c	class:Ext	inherits:Ext.slider.MultiSlider	link:Ext.slider.SingleSlider
+Slider	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^    constructor: function(config) {$/;"	f	class:SingleSlider	signature:()	link:Ext.slider.SingleSlider
 SliderField	/home/david/ext/ext-3.2.1/src/widgets/form/SliderField.js	/^Ext.form.SliderField = Ext.extend(Ext.form.Field, {$/;"	c	class:form	inherits:Ext.form.Field	link:Ext.form.SliderField
 SliderTip	/home/david/ext/ext-3.2.1/src/widgets/tips/SliderTip.js	/^Ext.slider.Tip = Ext.extend(Ext.Tip, {$/;"	c	class:ux	inherits:Ext.Tip	link:Ext.slider.Tip
 SortTypes	/home/david/ext/ext-3.2.1/src/data/SortTypes.js	/^Ext.data.SortTypes = {$/;"	c	class:data	link:Ext.data.SortTypes
@@ -375,11 +402,14 @@ TaskRunner	/home/david/ext/ext-3.2.1/src/ext-core/src/util/TaskMgr.js	/^Ext.util
 TaskRunner	/home/david/ext/ext-3.2.1/src/ext-core/src/util/TaskMgr.js	/^Ext.util.TaskRunner = function(interval){$/;"	f	class:util	link:Ext.util.TaskRunner
 Template	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Template.js	/^Ext.Template = function(html){$/;"	c	class:Ext	link:Ext.Template
 Template	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Template.js	/^Ext.Template = function(html){$/;"	f	class:Ext	link:Ext.Template
+TemplateColumn	/home/david/ext/ext-3.2.1/src/widgets/grid/Column.js	/^    constructor: function(cfg){$/;"	f	class:TemplateColumn	signature:()	link:Ext.grid.TemplateColumn
 TemplateColumn	/home/david/ext/ext-3.2.1/src/widgets/grid/Column.js	/^Ext.grid.TemplateColumn = Ext.extend(Ext.grid.Column, {$/;"	c	class:grid	inherits:Ext.grid.Column	link:Ext.grid.TemplateColumn
 TextArea	/home/david/ext/ext-3.2.1/src/widgets/form/TextArea.js	/^Ext.form.TextArea = Ext.extend(Ext.form.TextField,  {$/;"	c	class:form	inherits:Ext.form.TextField	link:Ext.form.TextArea
 TextField	/home/david/ext/ext-3.2.1/src/widgets/form/TextField.js	/^Ext.form.TextField = Ext.extend(Ext.form.Field,  {$/;"	c	class:form	inherits:Ext.form.Field	link:Ext.form.TextField
+TextItem	/home/david/ext/ext-3.2.1/src/widgets/Toolbar.js	/^    constructor: function(config){$/;"	f	class:TextItem	signature:(<+text:String/Object+>)	link:Ext.Toolbar.TextItem
 TextItem	/home/david/ext/ext-3.2.1/src/widgets/menu/TextItem.js	/^Ext.menu.TextItem = Ext.extend(Ext.menu.BaseItem, {$/;"	c	class:menu	inherits:Ext.menu.BaseItem	link:Ext.menu.TextItem
 TextMetrics	/home/david/ext/ext-3.2.1/src/util/TextMetrics.js	/^Ext.util.TextMetrics = function(){$/;"	c	class:util	link:Ext.util.TextMetrics
+Thumb	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^    constructor: function(config) {$/;"	f	class:Thumb	signature:()	link:Ext.slider.Thumb
 Thumb	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^Ext.slider.Thumb = Ext.extend(Object, {$/;"	c	class:slider	inherits:Object	link:Ext.slider.Thumb
 TimeAxis	/home/david/ext/ext-3.2.1/src/widgets/chart/Chart.js	/^Ext.chart.TimeAxis = Ext.extend(Ext.chart.Axis, {$/;"	c	class:chart	inherits:Ext.chart.Axis	link:Ext.chart.TimeAxis
 TimeField	/home/david/ext/ext-3.2.1/src/widgets/form/TimeField.js	/^Ext.form.TimeField = Ext.extend(Ext.form.ComboBox, {$/;"	c	class:form	inherits:Ext.form.ComboBox	link:Ext.form.TimeField
@@ -417,6 +447,8 @@ U	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   U: 85,$/;"	v	clas
 U	/home/david/ext/ext-3.2.1/src/util/Date.js	/^        U: "Math.round(this.getTime() / 1000)"$/;"	v	class:Date	link:Date
 UP	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   UP: 38,$/;"	v	class:EventManager	link:Ext.EventManager
 USE_NATIVE_JSON	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Ext.js	/^        USE_NATIVE_JSON : false,$/;"	v	class:Ext	type:Boolean	link:Ext
+UpdateManager	/home/david/ext/ext-3.2.1/src/util/UpdateManager.js	/^        constructor: function(el, forceNew){$/;"	f	class:Updater	signature:(<+forceNew:Boolean+>, <+el:Mixed+>)	link:Ext.Updater
+Updater	/home/david/ext/ext-3.2.1/src/util/UpdateManager.js	/^        constructor: function(el, forceNew){$/;"	f	class:Updater	signature:(<+forceNew:Boolean+>, <+el:Mixed+>)	link:Ext.Updater
 V	/home/david/ext/ext-3.2.1/src/core/EventManager-more.js	/^   V: 86,$/;"	v	class:EventManager	link:Ext.EventManager
 VBoxLayout	/home/david/ext/ext-3.2.1/src/widgets/layout/BoxLayout.js	/^Ext.layout.VBoxLayout = Ext.extend(Ext.layout.BoxLayout, {$/;"	c	class:layout	inherits:Ext.layout.BoxLayout	link:Ext.layout.VBoxLayout
 VTypes	/home/david/ext/ext-3.2.1/src/widgets/form/VTypes.js	/^Ext.form.VTypes = function(){$/;"	c	class:form	link:Ext.form.VTypes
@@ -432,6 +464,7 @@ XTemplate	/home/david/ext/ext-3.2.1/src/util/XTemplate.js	/^Ext.XTemplate = func
 XTemplate	/home/david/ext/ext-3.2.1/src/util/XTemplate.js	/^Ext.XTemplate = function(){$/;"	f	class:Ext	link:Ext.XTemplate
 XmlReader	/home/david/ext/ext-3.2.1/src/data/XmlReader.js	/^Ext.data.XmlReader = function(meta, recordType){$/;"	c	class:data	link:Ext.data.XmlReader
 XmlReader	/home/david/ext/ext-3.2.1/src/data/XmlReader.js	/^Ext.data.XmlReader = function(meta, recordType){$/;"	f	class:data	link:Ext.data.XmlReader
+XmlStore	/home/david/ext/ext-3.2.1/src/data/XmlStore.js	/^    constructor: function(config){$/;"	f	class:XmlStore	signature:(<+config:Object+>)	link:Ext.data.XmlStore
 XmlStore	/home/david/ext/ext-3.2.1/src/data/XmlStore.js	/^Ext.data.XmlStore = Ext.extend(Ext.data.Store, {$/;"	c	class:data	inherits:Ext.data.Store	link:Ext.data.XmlStore
 XmlWriter	/home/david/ext/ext-3.2.1/src/data/XmlWriter.js	/^Ext.data.XmlWriter = function(params) {$/;"	c	class:data	link:Ext.data.XmlWriter
 XmlWriter	/home/david/ext/ext-3.2.1/src/data/XmlWriter.js	/^Ext.data.XmlWriter = function(params) {$/;"	f	class:data	link:Ext.data.XmlWriter
@@ -847,38 +880,6 @@ constrainThumbs	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^    constrainT
 constrainTo	/home/david/ext/ext-3.2.1/src/dd/DDCore.js	/^    constrainTo : function(constrainTo, pad, inContent){$/;"	m	class:DragDrop	signature:(<+pad:Object/Number+>, <+inContent:Boolean+>, <+constrainTo:Mixed+>)	link:Ext.dd.DragDrop
 constrainX	/home/david/ext/ext-3.2.1/src/dd/DDCore.js	/^    constrainX: false,$/;"	v	class:DragDrop	type:boolean	link:Ext.dd.DragDrop
 constrainY	/home/david/ext/ext-3.2.1/src/dd/DDCore.js	/^    constrainY: false,$/;"	v	class:DragDrop	type:boolean	link:Ext.dd.DragDrop
-constructor	/home/david/ext/ext-3.2.1/src/core/CompositeElement.js	/^    constructor : function(els, root){$/;"	m	class:CompositeElement	signature:()	link:Ext.CompositeElement
-constructor	/home/david/ext/ext-3.2.1/src/data/Api.js	/^    constructor : function(message, arg) {$/;"	m	class:Error	signature:()	link:Ext.data.Api.Error
-constructor	/home/david/ext/ext-3.2.1/src/data/ArrayStore.js	/^    constructor: function(config){$/;"	m	class:ArrayStore	signature:(<+config:Object+>)	link:Ext.data.ArrayStore
-constructor	/home/david/ext/ext-3.2.1/src/data/DataField.js	/^    constructor : function(config){$/;"	m	class:Field	signature:()	link:Ext.data.Field
-constructor	/home/david/ext/ext-3.2.1/src/data/DataProxy.js	/^    constructor : function(message, arg) {$/;"	m	class:Error	signature:(<+arg:Record/Record[]+>, <+message:String+>)	link:Ext.data.DataProxy.Error
-constructor	/home/david/ext/ext-3.2.1/src/data/DataReader.js	/^    constructor : function(message, arg) {$/;"	m	class:Error	signature:()	link:Ext.data.DataReader.Error
-constructor	/home/david/ext/ext-3.2.1/src/data/DirectStore.js	/^    constructor : function(config){$/;"	m	class:DirectStore	signature:(<+config:Object+>)	link:Ext.data.DirectStore
-constructor	/home/david/ext/ext-3.2.1/src/data/GroupingStore.js	/^    constructor: function(config) {$/;"	m	class:GroupingStore	signature:(<+config:Object+>)	link:Ext.data.GroupingStore
-constructor	/home/david/ext/ext-3.2.1/src/data/JsonReader.js	/^    constructor : function(message, arg) {$/;"	m	class:Error	signature:()	link:Ext.data.JsonReader.Error
-constructor	/home/david/ext/ext-3.2.1/src/data/JsonStore.js	/^    constructor: function(config){$/;"	m	class:JsonStore	signature:(<+config:Object+>)	link:Ext.data.JsonStore
-constructor	/home/david/ext/ext-3.2.1/src/data/XmlStore.js	/^    constructor: function(config){$/;"	m	class:XmlStore	signature:(<+config:Object+>)	link:Ext.data.XmlStore
-constructor	/home/david/ext/ext-3.2.1/src/direct/PollingProvider.js	/^    constructor : function(config){$/;"	m	class:PollingProvider	signature:()	link:Ext.direct.PollingProvider
-constructor	/home/david/ext/ext-3.2.1/src/direct/Provider.js	/^    constructor : function(config){$/;"	m	class:Provider	signature:()	link:Ext.direct.Provider
-constructor	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Ext.js	/^    constructor: function(config) {$/;"	m	class:Ext	signature:()	link:Ext
-constructor	/home/david/ext/ext-3.2.1/src/ext-core/src/util/Observable.js	/^    constructor: function(config) {$/;"	m	class:Observable	signature:()	link:Ext.util.Observable
-constructor	/home/david/ext/ext-3.2.1/src/util/UpdateManager.js	/^        constructor: function(el, forceNew){$/;"	m	class:Updater	signature:(<+forceNew:Boolean+>, <+el:Mixed+>)	link:Ext.Updater
-constructor	/home/david/ext/ext-3.2.1/src/widgets/Action.js	/^    constructor : function(config){$/;"	m	class:Action	signature:()	link:Ext.Action
-constructor	/home/david/ext/ext-3.2.1/src/widgets/Resizable.js	/^    constructor: function(el, config){$/;"	m	class:Resizable	signature:(<+config:Object+>, <+el:Mixed+>)	link:Ext.Resizable
-constructor	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^    constructor: function(config) {$/;"	m	class:SingleSlider	signature:()	link:Ext.slider.SingleSlider
-constructor	/home/david/ext/ext-3.2.1/src/widgets/Slider.js	/^    constructor: function(config) {$/;"	m	class:Thumb	signature:()	link:Ext.slider.Thumb
-constructor	/home/david/ext/ext-3.2.1/src/widgets/Toolbar.js	/^    constructor: function(config){$/;"	m	class:TextItem	signature:(<+text:String/Object+>)	link:Ext.Toolbar.TextItem
-constructor	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^    constructor : function(form, opts) {$/;"	m	class:DirectSubmit	signature:()	link:Ext.form.Action.DirectSubmit
-constructor	/home/david/ext/ext-3.2.1/src/widgets/form/Action.js	/^    constructor: function(form, opts) {$/;"	m	class:DirectLoad	signature:()	link:Ext.form.Action.DirectLoad
-constructor	/home/david/ext/ext-3.2.1/src/widgets/form/BasicForm.js	/^    constructor: function(el, config){$/;"	m	class:BasicForm	signature:(<+config:Object+>, <+el:Mixed+>)	link:Ext.form.BasicForm
-constructor	/home/david/ext/ext-3.2.1/src/widgets/grid/AbstractSelectionModel.js	/^    constructor : function(){$/;"	m	class:AbstractSelectionModel	signature:()	type:Object	link:Ext.grid.AbstractSelectionModel
-constructor	/home/david/ext/ext-3.2.1/src/widgets/grid/CellSelectionModel.js	/^    constructor : function(config){$/;"	m	class:CellSelectionModel	signature:(<+config:Object+>)	link:Ext.grid.CellSelectionModel
-constructor	/home/david/ext/ext-3.2.1/src/widgets/grid/Column.js	/^    constructor: function(cfg){$/;"	m	class:TemplateColumn	signature:()	link:Ext.grid.TemplateColumn
-constructor	/home/david/ext/ext-3.2.1/src/widgets/grid/ColumnModel.js	/^    constructor : function(config){$/;"	m	class:ColumnModel	signature:()	link:Ext.grid.ColumnModel
-constructor	/home/david/ext/ext-3.2.1/src/widgets/grid/PropertyGrid.js	/^    constructor : function(grid, source){$/;"	m	class:PropertyStore	signature:(<+source:Object+>, <+grid:Ext.grid.Grid+>)	link:Ext.grid.PropertyStore
-constructor	/home/david/ext/ext-3.2.1/src/widgets/list/Column.js	/^    constructor : function(c){$/;"	m	class:Column	signature:()	link:Ext.list.Column
-constructor	/home/david/ext/ext-3.2.1/src/widgets/tree/TreeSelectionModel.js	/^    constructor : function(config){$/;"	m	class:DefaultSelectionModel	signature:()	link:Ext.tree.DefaultSelectionModel
-constructor	/home/david/ext/ext-3.2.1/src/widgets/tree/TreeSelectionModel.js	/^    constructor : function(config){$/;"	m	class:MultiSelectionModel	signature:()	link:Ext.tree.MultiSelectionModel
 contains	/home/david/ext/ext-3.2.1/src/core/CompositeElementLite-more.js	/^    contains : function(el){$/;"	m	class:CompositeElementLite	signature:()	link:Ext.CompositeElementLite
 contains	/home/david/ext/ext-3.2.1/src/data/Tree.js	/^    contains : function(node){$/;"	m	class:Node	signature:(<+node:Node+>)	type:Boolean	link:Ext.data.Node
 contains	/home/david/ext/ext-3.2.1/src/ext-core/src/core/Element.js	/^    contains : function(el){$/;"	m	class:Element	signature:(<+el:HTMLElement/String+>)	type:Boolean	link:Ext.Element
