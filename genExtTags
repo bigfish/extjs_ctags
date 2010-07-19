@@ -1,7 +1,17 @@
 #!/bin/bash
 #generate tags for Ext.js source code
 # (or Ext.js project which follows same code conventions)
-EXT_SRC="${EXT_HOME}/src"
+
+if [ -z $1 ];then
+	echo "source directory containing js files is required argument"
+	exit 1
+fi
+SRC=$1
+if [ -z $2 ];then
+	echo "info file is required 2nd argument"
+	exit 1
+fi
+INFO=$2
 
 echo '!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/'
 echo '!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/'
@@ -10,6 +20,8 @@ echo '!_TAG_PROGRAM_NAME	Exuberant Ctags	'
 echo '!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	'
 echo '!_TAG_PROGRAM_VERSION	5.8	//'
 
-for file in $(find $EXT_SRC -name "*.js"); do
-	./getExtTags.pl $file
+for file in $(find $SRC -name "*.js"); do
+	#also give infofile and linecount of info file as 2nd and 3rd param
+	${EXT_HOME}/getExtTags.pl $file $INFO $(wc -l info | awk '{print $1}')
 done
+

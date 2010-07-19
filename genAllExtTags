@@ -1,6 +1,19 @@
 #!/bin/bash
 #wrapper to generate sorted tags file in same dir
+if [ -z $1 ];then
+	echo "source directory containing js files is required argument"
+	exit 1
+fi
+SRC=$1
+INFO_FILE="$(pwd)/info"
+#the scripts are in EXT_HOME
+EXT=$EXT_HOME
 TMP_FILE="tmp.tags"
-./genExtTags >  $TMP_FILE
-./replacePointers.pl $TMP_FILE > tags
+rm $INFO_FILE
+touch $INFO_FILE
+
+$EXT/genExtTags $SRC $INFO_FILE >  $TMP_FILE
+
+$EXT/replacePointers.pl $TMP_FILE > tags
+
 rm $TMP_FILE

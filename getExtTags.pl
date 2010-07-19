@@ -2,7 +2,8 @@
 use File::Basename;
 #script to extract exuberant ctags from Ext js source code
 my $file = shift;
-
+my $infofile = shift;
+my $infolinenum = shift;
 #find classes in file
 (my $filename, my $filepath, my $ext) = fileparse($file, qr{\..*});
 #read file into string
@@ -14,7 +15,7 @@ my $getMember = 0;
 my $getClass = 0;
 my $getConstructor = 0;
 my $tagStr = "";
-my $TAB = '	';
+my $TAB = "	";
 my $class = "";
 my $full_class = "";
 my $full_class_re = "";
@@ -25,11 +26,16 @@ my $inherit = "";
 my $sig;
 my $param_name;
 my $param_type;
-my %params = ();
+my @params = ();
 my $property = "";
 my $type = "";
 my $method = "";
 my $return = "";
+my $getDescr = 0;
+my $descr = "";
+my $singleton = 0;
+my $static = 0;
+my @infolines = ();
 
 foreach(@lines){
 	chomp;
@@ -56,6 +62,7 @@ foreach(@lines){
 	}
 	#if the class is singleton there will not be a constructor
 	if($line =~ /^\s*[\*]?\s*\@singleton/) {
+		$singleton = 1;
 		$getConstructor = 0;
 	}
 	# parse class 
@@ -73,6 +80,10 @@ foreach(@lines){
 			$tagStr = $class.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$parent_class;
 			if ($inherit ne '') {
 				$tagStr = $tagStr.$TAB.'inherits:'.$inherit;
+			}
+			#if 'singleton' (actually an object literal)
+			if ($singleton) {
+				$tagStr = $tagStr.$TAB.'singleton:true'
 			}
 			#add link for help
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
@@ -95,18 +106,34 @@ foreach(@lines){
 			$getConstructor = 0;
 		}
 	}
+	#get first line of member comment as description
+	if ($getDescr) {
+		#ignore @ lines -- not descriptions
+		if ($line !~ /^\s*\*?\s*\@/){
+			if ($line =~ /^\s*\*?\s*(.*)/){
+				$descr = $1;
+				push(@infolines, $descr);
+			}
+		}
+		$getDescr = 0;
+	}
 	#when comment starts clear some vars
 	if($line =~ /^\s*\/\*\*/) {
 		$getMember = 1;
+		$getDescr = 1;#get next line
 	}
+	
 	#function parameters
 	if ($line =~ /^\s*[\*]?\s*\@param\s+\{([^}]*)\}\s([a-zA-Z0-9_\$]+)/g) {
+
 		$param_type = $1;
 		$param_name = $2;
-		$params{ $param_name } = $param_type;#$1 = name , $2 = type
+		#append ? to optional parameter name
+		if(index($line, "(optional)") > -1) {
+			$param_name .= "?";
+		}
+		push(@params, { name => $param_name, type => $param_type });#$1 = name , $2 = type
 
-		#print "adding param : $param_name = " . $params{$param_name} . "\n";
-		my @keys = keys %params;
 	}
 	#function return value
 	if ($line =~ /^\s*[\*]?\s*\@return\s+\{([^}]*)\}/g) {
@@ -122,6 +149,10 @@ foreach(@lines){
 	if ($line =~ /^\s*\*\s*\@type\s+\}?([A-Za-z0-9_]*)\}?/g) {
 		#print "found type: $1\n";
 		$type = $1;
+	}
+	#static marker
+	if ($line =~ /^\s*[\*]?\s*\@static/g) {
+		$static = 1;
 	}
 	if($line =~ /^\s*\*\//) {
 		#print "ending doc comment\n";
@@ -142,13 +173,17 @@ foreach(@lines){
 				#construct signature
 				$sig = "(";
 				my $isfirstparam = 1;
+                my $numparams = scalar(@params);
+				for (my $p = 0; $p < $numparams; $p++ ) {
 
-				while ( ($param_name, $param_type) = each %params) {
+                    my $param_name = $params[$p]{'name'};
+                    my $param_type = $params[$p]{'type'};
+
 					if ($isfirstparam) {
 						$sig .= '<+'.$param_name.":".$param_type.'+>' ;
 						$isfirstparam = 0;
 					} else {
-						$sig .= ", " . '<+'.$param_name.":".$param_type.'+>' ;
+						$sig .= "," . '<+'.$param_name.":".$param_type.'+>' ;
 						#$sig .=  ", " . $param_type . " " . $param_name;
 					}
 				}
@@ -158,6 +193,14 @@ foreach(@lines){
 				#print "found property: $mName \n";
 				$typeToken = "v";#f = field?
 			}
+
+			#rename constructor to class name
+			if ($mName =~ /constructor/){
+				$mName = $class;
+				$typeToken = 'f';
+				$return = $class;
+			}
+
 			#construct tag
 			if ($mName =~ "constructor") {
 				$typeToken = "f";
@@ -174,10 +217,33 @@ foreach(@lines){
 			} elsif (length($type) > 0) {
 				$tagStr = $tagStr.$TAB.'type:'.$type;
 			}
+
+			#add full class name as link for help docs
+			$tagStr = $tagStr.$TAB.'link:'.$full_class;
+			#if singleton, members are static
+			#ie: they are called on the class name directly
+			#this can also be explicitly declared on methods or properties
+			#Note: it is not possible to have non-static methods on singletons
+			#since singletons are just POJOs they cannot be instantiated
+			if ($singleton || $static) {
+				#using the field name 'static' was causing errors
+				$tagStr = $tagStr.$TAB.'isstatic:yes'
+			} else {
+				$tagStr = $tagStr.$TAB.'isstatic:no'
+			}
+			#add description if any
+			if ($descr) {
+				#make sure there are no tabs in description
+				#still seems to be a problem with including description text.. causes errors in vim
+				#perhaps lines are too long, or whitespace in comments is a problem?
+				#$tagStr = $tagStr.$TAB.'descr:'.$descr;
+				#lets juts use a line index
+				$infolinenum += 1;
+				$tagStr = $tagStr.$TAB.'info:'.$infofile . '|' . $infolinenum;
+
+			}
 			#exclude any globals -- there are only a few which are not needed -- everything should hang off Ext...
 			if ($class ne '') {
-				#add link for help
-				$tagStr = $tagStr.$TAB.'link:'.$full_class;
 				print "$tagStr\n";
 			}
 			#reset flag until next doc comment
@@ -204,10 +270,18 @@ foreach(@lines){
 	}
 }
 
+#write infolines to info file
+open (INFO, '>>info');
+foreach (@infolines){
+	print INFO $_."\n";
+}
+close (INFO); 
+
+
 sub resetVars {
 	$property = "";
 	$type = "";
-	%params = ();
+	@params = ();
 	$method = "";
 	$return = "";
 	$memberType = "";
@@ -217,6 +291,10 @@ sub resetVars {
 	$tagStr = "";
 	$inherit = "";
 	$sig = "";
+	$getDescr = 0;
+	$singleton = 0;
+	$static = 0;
+	$descr = "";
 }
 
 

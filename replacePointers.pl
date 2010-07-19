@@ -76,7 +76,7 @@ foreach(@lines){
 	}
 	
 }
-my @outlines = [];
+my @outlines = ();
 #third loop -- output replaced tag line if pointer found, or else just output original line
 foreach(@lines){
 	chomp;
@@ -94,10 +94,11 @@ foreach(@lines){
 
 #sort lines and spit out
 my @output = sort(@outlines);
+
 foreach(@output){
 	my $l = $_;
-	#skip empty lines
-	if($l !~ /^\s*$/) {
+	#skip empty lines 
+	if($l !~ /^\s*$/ ) {
 		print $_;
 	}
 }
