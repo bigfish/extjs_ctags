@@ -222,7 +222,9 @@ foreach(@lines){
 			#since singletons are just POJOs they cannot be instantiated
 			if ($singleton || $static) {
 				#using the field name 'static' was causing errors
-				$tagStr = $tagStr.$TAB.'isstatic:true'
+				$tagStr = $tagStr.$TAB.'isstatic:yes'
+			} else {
+				$tagStr = $tagStr.$TAB.'isstatic:no'
 			}
 			#add description if any
 			if ($descr) {
