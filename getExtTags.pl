@@ -57,6 +57,7 @@ foreach(@lines){
             $class = $full_class;#full class has no dots .. single word class
         }
 		resetVars();
+		$singleton = 0;
 		$getConstructor = 1;
 		$getClass = 1;
 	}
@@ -292,7 +293,6 @@ sub resetVars {
 	$inherit = "";
 	$sig = "";
 	$getDescr = 0;
-	$singleton = 0;
 	$static = 0;
 	$descr = "";
 }
