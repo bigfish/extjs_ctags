@@ -120,7 +120,7 @@ foreach(@lines){
 	}
 	#when comment starts clear some vars
 	if($line =~ /^\s*\/\*\*/) {
-		$getMember = 1;
+		$getMember = 0;#avoid getting members inside comments
 		$getDescr = 1;#get next line
 	}
 	
@@ -147,7 +147,12 @@ foreach(@lines){
 		$method = $1;
 	}
 	#property type
-	if ($line =~ /^\s*\*\s*\@type\s+\}?([A-Za-z0-9_]*)\}?/g) {
+	if ($line =~ /^\s*\*\s*\@type\s+\{?([A-Za-z0-9_\\\[\]]*)\}?/g) {
+		#print "found type: $1\n";
+		$type = $1;
+	}
+	#cfg type
+	if ($line =~ /^\s*\*\s*\@cfg\s+\{?([A-Za-z0-9_\\\[\]]*)\}?/g) {
 		#print "found type: $1\n";
 		$type = $1;
 	}
