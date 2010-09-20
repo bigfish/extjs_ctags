@@ -67,6 +67,7 @@ sub convertType
 	$jsdoc_type =~ s/Object/object/g;
 	$jsdoc_type =~ s/Function/function/g;
 	$jsdoc_type =~ s/Boolean/boolean/g;
+	$jsdoc_type =~ s/([A-Za-z0-9_\$\.]*)\[\]/Array\.\<\1\>/g;
 	#TODO: replace Union types [] with ()
 	#TODO: replace foo[] with Array.<foo>
 	#TODO replace foo? with foo=
