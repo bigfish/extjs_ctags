@@ -42,6 +42,16 @@ foreach(@lines){
 	my $line = $_;
 	my $re;
 
+    #ignore definition on line following // private
+    if ($private){
+        $private -= 1;
+        next;
+    }
+    if ($line =~ /\/\/\s*private/){
+        $private = 1;
+        next;
+    }
+    
 	if($line =~ /^\s*[\*]?\s*\@class\s([A-Za-z0-9_\$\.]*).*$/) {
 		$full_class = $1;
         #if full_class name contains a dot, set class to last part
@@ -166,6 +176,7 @@ foreach(@lines){
 		#set flag to capture next match
 		$getMember = 1;
 	}
+
 
 	if ($getMember == 1) {
 		#match member declaration	
