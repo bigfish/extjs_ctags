@@ -32,12 +32,15 @@ foreach(@taglines){
 			print "/**\n";
 			print " * \@constructor\n";
 			print " */\n";
+			#TODO: params
 			print "$link = function () {};\n";
 		}
 		if($type =~	/m/){
 			#method
 			#methods have link == class which contains them
-			#unless we are in a singleton, attach methods to the prototype of the constructor
+			#attach methods to the prototype of the constructor,
+			#except static methods ( which are simply members of the 'class' object)
+			#TODO: params
 			if ($tagline =~ /isstatic\:yes/){
 				print "$link\.$tagname = function () {};\n";
 			} else {
@@ -56,6 +59,7 @@ foreach(@taglines){
 				print "var has no type: "
 			}
 			#TODO default values corresponding to types ?? is this necessary?
+			
 			print "$link\.$tagname = {};\n";
 		}
 	}
