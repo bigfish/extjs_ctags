@@ -28,7 +28,7 @@ my $param_name;
 my $param_type;
 my @params = ();
 my $property = "";
-my $type = "";
+my $type = "object";#default type is object
 my $method = "";
 my $return = "";
 my $getDescr = 0;
@@ -141,7 +141,7 @@ foreach(@lines){
 
 		$param_type = $1;
 		$param_name = $2;
-		#append ? to optional parameter name
+		#append = to optional parameter name
 		if(index($line, "(optional)") > -1) {
 			$param_name .= "?";
 		}
@@ -236,7 +236,10 @@ foreach(@lines){
 				$tagStr = $tagStr.$TAB.'type:'.$return;
 			} elsif (length($type) > 0) {
 				$tagStr = $tagStr.$TAB.'type:'.$type;
-			}
+			} else {
+                #default to object type
+				$tagStr = $tagStr.$TAB.'type:Object';
+            }
 
 			#add full class name as link for help docs
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
