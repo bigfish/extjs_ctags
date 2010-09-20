@@ -14,6 +14,8 @@ foreach(@taglines){
 	my $class = "";
 	my $type = "";
 	my $link = "";
+	my $singleton = 0;
+
 	#functions
 	if( $tagline =~ /^([^\t]*)\t([^\t]*)\s\/.*\$\/;"\s([a-z])\sclass\:([\S]+).*link\:([\S]*)/){
 		$tagname = $1;
@@ -35,7 +37,12 @@ foreach(@taglines){
 		if($type =~	/m/){
 			#method
 			#methods have link == class which contains them
-			print "$link\.$tagname = function () {};\n";
+			#unless we are in a singleton, attach methods to the prototype of the constructor
+			if ($tagline =~ /isstatic\:yes/){
+				print "$link\.$tagname = function () {};\n";
+			} else {
+				print "$link\.prototype\.$tagname = function () {};\n";
+			}
 		
 		}
 		if ($type =~ /v/){
@@ -48,12 +55,18 @@ foreach(@taglines){
 			} else {
 				print "var has no type: "
 			}
+			#TODO default values corresponding to types ?? is this necessary?
 			print "$link\.$tagname = {};\n";
 		}
-		#print "$tagname $type $class $link\n";
 	}
 }
 
+#TODO
+sub convertParams
+{
+
+}
+#TODO: typedefs ??
 sub convertType
 {
 	my $jsdoc_type = shift;
@@ -62,7 +75,6 @@ sub convertType
 		$jsdoc_type =~ s/\//\|/g;
 		$jsdoc_type = "(" . $jsdoc_type . ")";
 	}
-	#TODO: lowercase native types
 	$jsdoc_type =~ s/String/string/g;
 	$jsdoc_type =~ s/Number/number/g;
 	$jsdoc_type =~ s/int/number/g;
@@ -71,9 +83,5 @@ sub convertType
 	$jsdoc_type =~ s/Function/function/g;
 	$jsdoc_type =~ s/Boolean/boolean/g;
 	$jsdoc_type =~ s/([A-Za-z0-9_\$\.]*)\[\]/Array\.\<\1\>/g;
-	#TODO: replace Union types [] with ()
-	#TODO: replace foo[] with Array.<foo>
-	#TODO replace foo? with foo=
-	#TODO replace foo* with ...foo
 	return $jsdoc_type;
 }
