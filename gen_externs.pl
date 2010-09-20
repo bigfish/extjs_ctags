@@ -58,7 +58,10 @@ sub convertType
 {
 	my $jsdoc_type = shift;
 	#replace / with |
-	$jsdoc_type =~ s/\//\|/g;
+	if ($jsdoc_type =~ /\//){
+		$jsdoc_type =~ s/\//\|/g;
+		$jsdoc_type = "(" . $jsdoc_type . ")";
+	}
 	#TODO: lowercase native types
 	$jsdoc_type =~ s/String/string/g;
 	$jsdoc_type =~ s/Number/number/g;
