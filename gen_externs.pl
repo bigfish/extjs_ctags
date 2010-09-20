@@ -57,10 +57,17 @@ foreach(@taglines){
 sub convertType
 {
 	my $jsdoc_type = shift;
+	#replace / with |
 	$jsdoc_type =~ s/\//\|/g;
-	#TODO: replace / with |
-	#TODO: replace Union types [] with ()
 	#TODO: lowercase native types
+	$jsdoc_type =~ s/String/string/g;
+	$jsdoc_type =~ s/Number/number/g;
+	$jsdoc_type =~ s/int/number/g;
+	$jsdoc_type =~ s/Array/array/g;
+	$jsdoc_type =~ s/Object/object/g;
+	$jsdoc_type =~ s/Function/function/g;
+	$jsdoc_type =~ s/Boolean/boolean/g;
+	#TODO: replace Union types [] with ()
 	#TODO: replace foo[] with Array.<foo>
 	#TODO replace foo? with foo=
 	#TODO replace foo* with ...foo
