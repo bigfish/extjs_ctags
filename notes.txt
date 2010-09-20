@@ -1,0 +1,33 @@
+/* 
+the types of the following vars could not be discovered,
+so getExtTags.pl defaults them to be of type 'object'
+I'm not sure if this will cause type checking problems in closure-compiler... 
+so I'm taking note of them here
+*/
+Ext.data.MemoryProxy.api = {};
+Ext.Spacer.autoEl = {};
+Ext.tree.TreeFilter.clearBlank = {};
+Ext.tree.RootTreeNodeUI.collapse = {};
+Ext.grid.GridDragZone.ddGroup = {};
+Ext.util.JSON.default = {};
+Ext.XTemplate.default = {};
+Ext.dd.StatusProxy.dh = {};
+Ext.layout.AbsoluteLayout.extraCls = {};
+Ext.list.DateColumn.format = {};
+Ext.Toolbar.Item.hideParent = {};
+Ext.EventManager.id = {};
+Ext.form.Radio.inputType = {};
+Ext.Toolbar.Fill.isFill = {};
+Ext.Error.lang = {};
+Ext.Toolbar.layout = {};
+Ext.form.Action.Load.method = {};
+Ext.slider.Tip.minWidth = {};
+Ext.layout.MenuLayout.monitorResize = {};
+Ext.layout.ToolbarLayout.monitorResize = {};
+Ext.data.Store.Error.name = {};
+Ext.chart.Chart.refreshBuffer = {};
+Ext.LoadMask.scope = {};
+Ext.form.Hidden.setSize = {};
+Ext.form.DisplayField.validationEvent = {};
+Ext.grid.PropertyColumnModel.valueText = {};
+
