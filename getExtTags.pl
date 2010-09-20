@@ -147,12 +147,12 @@ foreach(@lines){
 		$method = $1;
 	}
 	#property type
-	if ($line =~ /^\s*\*\s*\@type\s+\{?([A-Za-z0-9_\\\[\]]*)\}?/g) {
+	if ($line =~ /^\s*\*\s*\@type\s+\{?([^}]*)\}?/g) {
 		#print "found type: $1\n";
 		$type = $1;
 	}
 	#cfg type
-	if ($line =~ /^\s*\*\s*\@cfg\s+\{?([A-Za-z0-9_\\\[\]]*)\}?/g) {
+	if ($line =~ /^\s*\*\s*\@cfg\s+\{?([^}]*)\}?/g) {
 		#print "found type: $1\n";
 		$type = $1;
 	}

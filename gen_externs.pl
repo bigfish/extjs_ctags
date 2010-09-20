@@ -40,9 +40,10 @@ foreach(@taglines){
 		}
 		if ($type =~ /v/){
 			#get type of var
-			if($tagline =~ /.*type\:([A-Za-z0-9_\$]*)/){
+			if($tagline =~ /.*type\:(\S*)/){
+				$type_spec = convertType($1);
 				print "/**\n";
-				print " * \@type {$1}\n";
+				print " * \@type {$type_spec}\n";
 				print " */\n";
 			} else {
 				print "var has no type: "
@@ -55,12 +56,13 @@ foreach(@taglines){
 
 sub convertType
 {
-	$ext_type = shift;
+	my $jsdoc_type = shift;
+	$jsdoc_type =~ s/\//\|/g;
 	#TODO: replace / with |
 	#TODO: replace Union types [] with ()
 	#TODO: lowercase native types
 	#TODO: replace foo[] with Array.<foo>
 	#TODO replace foo? with foo=
 	#TODO replace foo* with ...foo
-
+	return $jsdoc_type;
 }
