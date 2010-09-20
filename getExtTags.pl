@@ -36,6 +36,7 @@ my $descr = "";
 my $singleton = 0;
 my $static = 0;
 my @infolines = ();
+my $in_doc_comment = 0;
 
 foreach(@lines){
 	chomp;
@@ -47,7 +48,7 @@ foreach(@lines){
         $private -= 1;
         next;
     }
-    if ($line =~ /\/\/\s*private/){
+    if ($line =~ /^\s*\/\/\s*private/){
         $private = 1;
         next;
     }
@@ -70,6 +71,7 @@ foreach(@lines){
 		$singleton = 0;
 		$getConstructor = 1;
 		$getClass = 1;
+        $in_doc_comment = 1;
 	}
 	#if the class is singleton there will not be a constructor
 	if($line =~ /^\s*[\*]?\s*\@singleton/) {
@@ -170,11 +172,12 @@ foreach(@lines){
 	if ($line =~ /^\s*[\*]?\s*\@static/g) {
 		$static = 1;
 	}
-	if($line =~ /^\s*\*\//) {
+	if($in_doc_comment && $line =~ /^\s*\*\//) {
 		#print "ending doc comment\n";
 		#expect function or property declaration on next line
 		#set flag to capture next match
 		$getMember = 1;
+        $in_doc_comment = 0;
 	}
 
 
