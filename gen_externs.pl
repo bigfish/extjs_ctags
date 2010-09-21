@@ -15,6 +15,9 @@ foreach(@taglines){
 	my $type = "";
 	my $link = "";
 	my $singleton = 0;
+	my $extern;
+	my $ns_len;
+	my $namespaceStr;
 
 	#functions
 	if( $tagline =~ /^([^\t]*)\t([^\t]*)\s\/.*\$\/;"\s([a-z])\sclass\:([\S]+).*link\:([\S]*)/){
@@ -23,17 +26,35 @@ foreach(@taglines){
 		$link = $5;
 		@namespace = split(/\./, $link);
 		$class = pop(@namespace);
+		$ns_len = scalar @namespace;
+		#create Namespace component objects if they do not exist
+		while ($ns_len > 0){
+			if($ns_len > 1){
+				$namespaceStr = join(".", @namespace);
+			} else {
+				$namespaceStr = $namespace[0];
+			}
+			if (!exists $externs{$namespaceStr}){
+				#keep track of externs so we don't add duplicates
+				$externs{$namespaceStr} = "{}";
+				print "var $namespaceStr = {};\n";
+			}
+			pop(@namespace);
+			$ns_len = scalar(@namespace);
+		}
 		if($type =~ /c/){
 			#class -- when Ext.extend() is used to create a class, there will be no constructor function
-			#TODO: create Namespace
 			#TODO: get signature ? not always possible with inherited classed
 			#TODO: get type info + params / return ?
 			#class have link == full class name
-			print "/**\n";
-			print " * \@constructor\n";
-			print " */\n";
-			#TODO: params
-			print "$link = function () {};\n";
+			if(!exists $externs{$link}){
+				print "/**\n";
+				print " * \@constructor\n";
+				print " */\n";
+				#TODO: params
+				$externs{$link} = "function () {};";
+				print "$link = function () {};\n";
+			}
 		}
 		if($type =~	/m/){
 			#method
@@ -42,25 +63,28 @@ foreach(@taglines){
 			#except static methods ( which are simply members of the 'class' object)
 			#TODO: params
 			if ($tagline =~ /isstatic\:yes/){
-				print "$link\.$tagname = function () {};\n";
+				$extern = "$link\.$tagname";
 			} else {
-				print "$link\.prototype\.$tagname = function () {};\n";
+				$extern = "$link\.prototype\.$tagname";
+			}
+			if(!exists $externs{$extern}){
+				print "$extern = function(){}\n";
 			}
 		
 		}
 		if ($type =~ /v/){
-			#get type of var
-			if($tagline =~ /.*type\:(\S*)/){
-				$type_spec = convertType($1);
-				print "/**\n";
-				print " * \@type {$type_spec}\n";
-				print " */\n";
-			} else {
-				print "var has no type: "
+			$extern = "$link\.$tagname";
+			if(!exists $externs{$extern}){
+				#get type of var
+				if($tagline =~ /.*type\:(\S*)/){
+					$type_spec = convertType($1);
+					print "/**\n";
+					print " * \@type {$type_spec}\n";
+					print " */\n";
+				}
+				#make value same type as type?
+				print "$extern = {};\n";
 			}
-			#TODO default values corresponding to types ?? is this necessary?
-			
-			print "$link\.$tagname = {};\n";
 		}
 	}
 }
