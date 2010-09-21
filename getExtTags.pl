@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use File::Basename;
+use Switch;
 #script to extract exuberant ctags from Ext js source code
 my $file = shift;
 my $infofile = shift;
@@ -28,7 +29,7 @@ my $param_name;
 my $param_type;
 my @params = ();
 my $property = "";
-my $type = "object";#default type is object
+my $type = "";
 my $method = "";
 my $return = "";
 my $getDescr = 0;
@@ -44,10 +45,9 @@ foreach(@lines){
 	my $re;
 
     #ignore definition on line following // private
-    if ($private){
-        $private -= 1;
-        next;
-    }
+	if ($private){
+		next;
+	}
     if ($line =~ /^\s*\/\/\s*private/){
         $private = 1;
         next;
@@ -134,6 +134,8 @@ foreach(@lines){
 	if($line =~ /^\s*\/\*\*/) {
 		$getMember = 0;#avoid getting members inside comments
 		$getDescr = 1;#get next line
+		$in_doc_comment = 1;
+		$private = 0;
 	}
 	
 	#function parameters
@@ -212,6 +214,88 @@ foreach(@lines){
 				#is property
 				#print "found property: $mName \n";
 				$typeToken = "v";#f = field?
+				#try to infer type if we have don't have it yet
+				if($tagStr !~ /type\:[^\t]+/ || $type eq ""){
+					if($mValue =~ /^[\d\.\-]+/){
+						$type = "Number";
+					} elsif ($mValue =~ /^'.*/) {
+						$type = "String";
+					} elsif ($mValue =~ /^".*/) {
+						$type = "String";
+					} elsif ($mValue =~ /^true|false/) {
+						$type = "Boolean";
+						#by convention, variables starting with 'is' are Boolean
+					} elsif ($mValue =~ /^is/) {
+						$type = "Boolean";
+					} elsif ($mValue =~ /^\[.*/) {
+						$type = "Array";
+					} elsif ($mValue =~ /^\{.*/) {
+						$type = "Object";
+					} elsif ($mValue =~ /^new ([^(]*)\(/) {
+						$type = $1;
+					} elsif ($mValue =~ /^Ext\.emptyFn/){
+						$type = "Function";
+					} elsif ($mValue =~ /^undefined/){
+						$type = "undefined";
+					} elsif ($mValue =~ /^null/){
+						$type = "null";
+					} elsif ($mValue =~ /^this/){
+						$type = $class;
+					} elsif ($mValue =~ /^NaN/){
+						$type = "NaN";
+					} elsif ($mValue =~ /^\//){
+						$type = "RegExp";
+					} elsif ($mValue =~ /^Number\.[A-Z_]+/){
+						$type = "Number";
+					} 
+					else {
+						#deal with a few outliers manually:
+						if($mName eq "BLANK_IMAGE_URL"){
+							$type = "String";
+						} 
+						if ($mName eq "useShims"){
+							$type = "Boolean";
+						}
+						if($class =~ /ComponentMgr/){
+							if($mName =~ /all/){
+								$type = "MixedCollection";
+							} elsif ($mName =~ /ptypes/){
+								$type = "Object";
+							} elsif ($mName =~ /types/){
+								$type = "Object";
+							}
+						} elsif ($class =~ /DatePicker/){
+							if($mName =~ /dayNames/){
+								$type = "Array";
+							} elsif ($mName =~ /monthNames/){
+								$type = "Array";
+							}
+						} elsif ($class =~ /EventManager/){
+							if($mName =~ /^id/){
+								#skip privates
+								$private = 1;
+								next;
+							} elsif ($mName =~ /^fireDocReady/){
+								$type = "Object";
+							}
+						} elsif ($class eq "JSON" && $mName eq "default") {
+							#skip privates
+							$private = 1;
+							next;
+						} elsif ($class eq "MemoryProxy" && $mName eq "api") {
+							$type = "Object";
+						} elsif ($class eq "XTemplate" && $mName eq "default") {
+							#skip privates
+							$private = 1;
+							next;
+						}
+						#if ($class =~ /Date/ && $mName =~ /_xMonth/){
+						if ($type eq ""){
+							print " TYPE DETECTION FAIL in $class : $line \n";
+						}
+					}
+					$tagStr = $tagStr.$TAB.'type:'.$type;
+				}
 			}
 
 			#rename constructor to class name
@@ -236,10 +320,7 @@ foreach(@lines){
 				$tagStr = $tagStr.$TAB.'type:'.$return;
 			} elsif (length($type) > 0) {
 				$tagStr = $tagStr.$TAB.'type:'.$type;
-			} else {
-                #default to object type
-				$tagStr = $tagStr.$TAB.'type:Object';
-            }
+			} #if we have not found the type yet we will infer it later...
 
 			#add full class name as link for help docs
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
