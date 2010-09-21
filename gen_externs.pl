@@ -18,7 +18,7 @@ foreach(@taglines){
 	my $extern;
 	my $ns_len;
 	my $namespaceStr;
-
+	my $extends;
 	#functions
 	if( $tagline =~ /^([^\t]*)\t([^\t]*)\s\/.*\$\/;"\s([a-z])\sclass\:([\S]+).*link\:([\S]*)/){
 		$tagname = $1;
@@ -50,6 +50,9 @@ foreach(@taglines){
 			if(!exists $externs{$link}){
 				print "/**\n";
 				print " * \@constructor\n";
+				if ($tagline =~ /inherits\:([^\t]+)\t/){
+					print " * \@extends {$1}\n";
+				}
 				print " */\n";
 				#TODO: params
 				$externs{$link} = "function () {};";
