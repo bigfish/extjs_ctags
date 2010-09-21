@@ -19,6 +19,7 @@ foreach(@taglines){
 	my $ns_len;
 	my $namespaceStr;
 	my $extends;
+	my $return;
 	#functions
 	if( $tagline =~ /^([^\t]*)\t([^\t]*)\s\/.*\$\/;"\s([a-z])\sclass\:([\S]+).*link\:([\S]*)/){
 		$tagname = $1;
@@ -53,6 +54,7 @@ foreach(@taglines){
 				if ($tagline =~ /inherits\:([^\t]+)\t/){
 					print " * \@extends {$1}\n";
 				}
+				getFnMeta($tagline);
 				print " */\n";
 				#TODO: params
 				$externs{$link} = "function () {};";
@@ -64,13 +66,20 @@ foreach(@taglines){
 			#methods have link == class which contains them
 			#attach methods to the prototype of the constructor,
 			#except static methods ( which are simply members of the 'class' object)
-			#TODO: params
 			if ($tagline =~ /isstatic\:yes/){
 				$extern = "$link\.$tagname";
 			} else {
 				$extern = "$link\.prototype\.$tagname";
 			}
 			if(!exists $externs{$extern}){
+				print "/**\n";
+				getFnMeta($tagline);
+				#if has type: use type as return
+				if($tagline =~ /type\:([^\t]*)/){
+					$return = convertType($1);
+					print " * \@return {$return}\n";
+				}
+				print " */\n";
 				print "$extern = function(){}\n";
 			}
 		
@@ -92,13 +101,44 @@ foreach(@taglines){
 	}
 }
 
-#TODO
-sub convertParams
+#process a tag with a constructor or method and print the params and return type, if any
+sub getFnMeta
 {
-
+	my $tag = shift;
+	my $sig;
+	my @params;
+	my $clean_param;
+	my $pname;
+	my $ptype;
+	if($tag =~ /signature\:\(([^\)]+)\)/){
+		$sig = $1;
+		if(length($sig) > 0){
+			if(index($sig, /\,/) > -1){
+				@params = split(/\,/, $sig);
+			} else {
+				#single arg
+				@params = ($sig);
+			}
+		} else {
+			#no params
+			@params = ();
+		}
+		foreach $param(@params){
+			#remove <++>
+			if($param =~ /\<\+([^+]+)\+\>/){
+				$clean_param = $1;
+				#split on :
+				if($clean_param =~ /([^:]+)\:(.*)/){
+					$pname = $1;
+					$ptype = $2;
+					$ptype = convertType($ptype);
+					print " * \@param {$ptype} $pname \n";
+				}
+			}
+		}
+	}
 }
-#TODO: typedefs ??
-sub convertType
+sub convertType	
 {
 	my $jsdoc_type = shift;
 	#replace / with |
