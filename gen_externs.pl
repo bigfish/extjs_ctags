@@ -20,6 +20,7 @@ foreach(@taglines){
 	my $namespaceStr;
 	my $extends;
 	my $return;
+    my $args;
 	#functions
 	if( $tagline =~ /^([^\t]*)\t([^\t]*)\s\/.*\$\/;"\s([a-z])\sclass\:([\S]+).*link\:([\S]*)/){
 		$tagname = $1;
@@ -44,9 +45,6 @@ foreach(@taglines){
 			$ns_len = scalar(@namespace);
 		}
 		if($type =~ /c/){
-			#class -- when Ext.extend() is used to create a class, there will be no constructor function
-			#TODO: get signature ? not always possible with inherited classed
-			#TODO: get type info + params / return ?
 			#class have link == full class name
 			if(!exists $externs{$link}){
 				print "/**\n";
@@ -54,11 +52,10 @@ foreach(@taglines){
 				if ($tagline =~ /inherits\:([^\t]+)\t/){
 					print " * \@extends {$1}\n";
 				}
-				getFnMeta($tagline);
+				$args = getFnMeta($tagline);
 				print " */\n";
-				#TODO: params
 				$externs{$link} = "function () {};";
-				print "$link = function () {};\n";
+				print "$link = function ($args) {};\n";
 			}
 		}
 		if($type =~	/m/){
@@ -73,14 +70,14 @@ foreach(@taglines){
 			}
 			if(!exists $externs{$extern}){
 				print "/**\n";
-				getFnMeta($tagline);
+				$args = getFnMeta($tagline);
 				#if has type: use type as return
 				if($tagline =~ /type\:([^\t]*)/){
 					$return = convertType($1);
 					print " * \@return {$return}\n";
 				}
 				print " */\n";
-				print "$extern = function(){}\n";
+				print "$extern = function($args){}\n";
 			}
 		
 		}
@@ -102,6 +99,7 @@ foreach(@taglines){
 }
 
 #process a tag with a constructor or method and print the params and return type, if any
+#returns args for signature
 sub getFnMeta
 {
 	my $tag = shift;
@@ -110,6 +108,8 @@ sub getFnMeta
 	my $clean_param;
 	my $pname;
 	my $ptype;
+    my $args = "";
+
 	if($tag =~ /signature\:\(([^\)]+)\)/){
 		$sig = $1;
 		if(length($sig) > 0){
@@ -132,11 +132,28 @@ sub getFnMeta
 					$pname = $1;
 					$ptype = $2;
 					$ptype = convertType($ptype);
+                    #remove ? or * after and change type to indicate optional or varargs
+                    if ($pname =~ /\?$/){
+                        $pname = s/\?$//g ;
+                        $ptype .= '=';
+                    }
+                    if ($pname =~ /\*$/){
+                        $pname = s/\*$//g ;
+                        $ptype = '...' . $ptype;
+                    }
 					print " * \@param {$ptype} $pname \n";
+
+                    #add pname to args
+                    if ($args eq ""){
+                        $args = $pname;
+                    } else {
+                        $args = $args.",$pname";
+                    }
 				}
 			}
 		}
 	}
+    return $args;
 }
 sub convertType	
 {
@@ -154,5 +171,6 @@ sub convertType
 	$jsdoc_type =~ s/Function/function/g;
 	$jsdoc_type =~ s/Boolean/boolean/g;
 	$jsdoc_type =~ s/([A-Za-z0-9_\$\.]*)\[\]/Array\.\<\1\>/g;
+    $jsdoc_type =~ s/Mixed/\*/g;
 	return $jsdoc_type;
 }
