@@ -18,6 +18,7 @@ foreach(@taglines){
 	my $extern;
 	my $ns_len;
 	my $namespaceStr;
+	my @namespaceDecl;
 	my $extends;
 	my $return;
     my $args;
@@ -30,6 +31,7 @@ foreach(@taglines){
 		$class = pop(@namespace);
 		$ns_len = scalar @namespace;
 		#create Namespace component objects if they do not exist
+		@namespaceDecl = ();
 		while ($ns_len > 0){
 			if($ns_len > 1){
 				$namespaceStr = join(".", @namespace);
@@ -39,10 +41,15 @@ foreach(@taglines){
 			if (!exists $externs{$namespaceStr}){
 				#keep track of externs so we don't add duplicates
 				$externs{$namespaceStr} = "{}";
-				print "var $namespaceStr = {};\n";
+				push(@namespaceDecl, "$namespaceStr = {};\n");
 			}
 			pop(@namespace);
 			$ns_len = scalar(@namespace);
+		}
+		#now reverse the namespace declarations so they are in the right order
+		@namespaceDecl = reverse(@namespaceDecl);
+		foreach $ns(@namespaceDecl){
+			print $ns;
 		}
 		if($type =~ /c/){
 			#class have link == full class name
