@@ -42,7 +42,9 @@ foreach(@taglines){
 			}
 			if (!exists $externs{$namespaceStr}){
 				#keep track of externs so we don't add duplicates
+				#TODO: this match is not working?
 				if (index($namespaceStr, /\./) > -1){
+					#TODO: use appropriate type
 					push(@namespaceDecl, "$namespaceStr = {};\n");
 					$externs{$namespaceStr} = "{}";
 				} else {
