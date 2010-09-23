@@ -84,7 +84,7 @@ foreach(@taglines){
 					print " * \@return {$return}\n";
 				}
 				print " */\n";
-				print "$extern = function($args){}\n";
+				print "$extern = function($args){};\n";
 			}
 		
 		}
@@ -132,20 +132,19 @@ sub getFnMeta
 		}
 		foreach $param(@params){
 			#remove <++>
-			if($param =~ /\<\+([^+]+)\+\>/){
+			if($param =~ /\<\+([^\+]+)\+\>/){
 				$clean_param = $1;
 				#split on :
-				if($clean_param =~ /([^:]+)\:(.*)/){
+				if($clean_param =~ /([^\:]+)\:(.*)/){
 					$pname = $1;
 					$ptype = $2;
 					$ptype = convertType($ptype);
                     #remove ? or * after and change type to indicate optional or varargs
                     if ($pname =~ /\?$/){
-                        $pname = s/\?$//g ;
+                        $pname =~ s/\?$//;
                         $ptype .= '=';
-                    }
-                    if ($pname =~ /\*$/){
-                        $pname = s/\*$//g ;
+                    } elsif ($pname =~ /\*$/){
+                        $pname =~ s/\*$// ;
                         $ptype = '...' . $ptype;
                     }
 					print " * \@param {$ptype} $pname \n";
