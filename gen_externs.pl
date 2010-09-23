@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 $tags_file=shift;
+#load global classes to avoid redeclaring
+$globals_file="global_classes.txt";
 
 my %externs;
 
@@ -36,13 +38,19 @@ foreach(@taglines){
 			if($ns_len > 1){
 				$namespaceStr = join(".", @namespace);
 			} else {
-				#global vars must be declared
-				$namespaceStr = "var " . $namespace[0];
+				$namespaceStr = $namespace[0];
 			}
 			if (!exists $externs{$namespaceStr}){
 				#keep track of externs so we don't add duplicates
-				$externs{$namespaceStr} = "{}";
-				push(@namespaceDecl, "$namespaceStr = {};\n");
+				if (index($namespaceStr, /\./) > -1){
+					push(@namespaceDecl, "$namespaceStr = {};\n");
+					$externs{$namespaceStr} = "{}";
+				} else {
+					if(!is_external($namespaceStr)){
+						push(@namespaceDecl, "var $namespaceStr;\n");
+						$externs{$namespaceStr} = "{}";
+					}
+				}
 			}
 			pop(@namespace);
 			$ns_len = scalar(@namespace);
@@ -54,7 +62,7 @@ foreach(@taglines){
 		}
 		if($type =~ /c/){
 			#class have link == full class name
-			if(!exists $externs{$link}){
+			if(!exists $externs{$link} && !is_external($link)){
 				print "/**\n";
 				print " * \@constructor\n";
 				if ($tagline =~ /inherits\:([^\t]+)\t/){
@@ -65,7 +73,7 @@ foreach(@taglines){
 				$externs{$link} = "function () {};";
 				print "$link = function ($args) {};\n";
 				#also create a typedef for the class 
-				if(!exists $externs{$tagname}){
+				if(!exists $externs{$tagname} && !is_external($tagname)){
 					print "/** \@typedef {".$link."} */\n";
 					print "var $tagname;\n";
 					$externs{$tagname} = 1;
@@ -82,7 +90,7 @@ foreach(@taglines){
 			} else {
 				$extern = "$link\.prototype\.$tagname";
 			}
-			if(!exists $externs{$extern}){
+			if(!exists $externs{$extern} && !is_external($tagname)){
 				print "/**\n";
 				$args = getFnMeta($tagline);
 				#if has type: use type as return
@@ -98,7 +106,7 @@ foreach(@taglines){
 		}
 		if ($type =~ /v/){
 			$extern = "$link\.$tagname";
-			if(!exists $externs{$extern}){
+			if(!exists $externs{$extern} && !is_external($tagname)){
 				#get type of var
 				if($tagline =~ /\ttype\:(\S*)/){
 					$type_spec = convertType($1);
@@ -116,7 +124,16 @@ foreach(@taglines){
 		}
 	}
 }
-
+sub is_external
+{
+	my $check = shift;
+	my $res = `grep $check $globals_file`;
+	if($res){
+		return 1;
+	} else {
+		return 0;
+	}
+}
 #process a tag with a constructor or method and print the params and return type, if any
 #returns args for signature
 sub getFnMeta
