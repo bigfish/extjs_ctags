@@ -36,7 +36,8 @@ foreach(@taglines){
 			if($ns_len > 1){
 				$namespaceStr = join(".", @namespace);
 			} else {
-				$namespaceStr = $namespace[0];
+				#global vars must be declared
+				$namespaceStr = "var " . $namespace[0];
 			}
 			if (!exists $externs{$namespaceStr}){
 				#keep track of externs so we don't add duplicates
@@ -63,6 +64,12 @@ foreach(@taglines){
 				print " */\n";
 				$externs{$link} = "function () {};";
 				print "$link = function ($args) {};\n";
+				#also create a typedef for the class 
+				if(!exists $externs{$tagname}){
+					print "/** \@typedef {".$link."} */\n";
+					print "var $tagname;\n";
+					$externs{$tagname} = 1;
+				}
 			}
 		}
 		if($type =~	/m/){
@@ -70,7 +77,7 @@ foreach(@taglines){
 			#methods have link == class which contains them
 			#attach methods to the prototype of the constructor,
 			#except static methods ( which are simply members of the 'class' object)
-			if ($tagline =~ /isstatic\:yes/){
+			if ($tagline =~ /\tisstatic\:yes/){
 				$extern = "$link\.$tagname";
 			} else {
 				$extern = "$link\.prototype\.$tagname";
@@ -79,8 +86,9 @@ foreach(@taglines){
 				print "/**\n";
 				$args = getFnMeta($tagline);
 				#if has type: use type as return
-				if($tagline =~ /type\:([^\t]*)/){
-					$return = convertType($1);
+				if($tagline =~ /\ttype\:([^\t]*)/){
+					$return = $1;
+					$return = convertType($return);
 					print " * \@return {$return}\n";
 				}
 				print " */\n";
@@ -92,14 +100,18 @@ foreach(@taglines){
 			$extern = "$link\.$tagname";
 			if(!exists $externs{$extern}){
 				#get type of var
-				if($tagline =~ /.*type\:(\S*)/){
+				if($tagline =~ /\ttype\:(\S*)/){
 					$type_spec = convertType($1);
+					$def_val = getDefVal($type_spec);
 					print "/**\n";
 					print " * \@type {$type_spec}\n";
 					print " */\n";
+					if($def_val eq "undefined"){
+						print "$extern;\n";
+					} else {
+						print "$extern = $def_val;\n";
+					}
 				}
-				#make value same type as type?
-				print "$extern = {};\n";
 			}
 		}
 	}
@@ -117,7 +129,7 @@ sub getFnMeta
 	my $ptype;
     my $args = "";
 
-	if($tag =~ /signature\:\(([^\)]+)\)/){
+	if($tag =~ /\tsignature\:\(([^\)]+)\)/){
 		$sig = $1;
 		if(length($sig) > 0){
 			if(index($sig, /\,/) > -1){
@@ -172,11 +184,35 @@ sub convertType
 	$jsdoc_type =~ s/String/string/g;
 	$jsdoc_type =~ s/Number/number/g;
 	$jsdoc_type =~ s/int/number/g;
-	$jsdoc_type =~ s/Array/array/g;
-	$jsdoc_type =~ s/Object/object/g;
-	$jsdoc_type =~ s/Function/function/g;
+	$jsdoc_type =~ s/array/Array/g;
+	$jsdoc_type =~ s/object/Object/g;
+	$jsdoc_type =~ s/Function/function()/g;
 	$jsdoc_type =~ s/Boolean/boolean/g;
 	$jsdoc_type =~ s/([A-Za-z0-9_\$\.]*)\[\]/Array\.\<\1\>/g;
-    $jsdoc_type =~ s/Mixed/\*/g;
+    #$jsdoc_type =~ s/Mixed/\*/g;
 	return $jsdoc_type;
+}
+
+sub getDefVal
+{
+	my $type = shift;
+	if($type =~ /string/){
+		return "''";
+	} elsif ($type =~ /number/){
+		return "1";
+	} elsif ($type =~ /Array/){
+		return "[]";
+	} elsif ($type =~ /Object/){
+		return "{}";
+	} elsif ($type =~ /boolean/){
+		return "true";
+	} elsif ($type =~ /undefined/){
+		return "undefined";
+	} elsif ($type =~ /null/){
+		return "null";
+	} elsif ($type =~ /function/){
+		return "function () {}";
+	}  else {
+		return "{}";
+	}
 }

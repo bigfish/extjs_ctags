@@ -80,12 +80,6 @@ The regular expression used to match template variables
 Returns an HTML fragment of this template with the specified values applied.
 Compiles the template into an internal function, eliminating the RegEx overhead.
 Create a data block containing Ext.data.Records from an Array.
-<p>Redefines the Proxy's API or a single action of an API. Can be called with two method signatures.</p>
-Returns true if the specified action is defined as a unique action in the api-config.
-All proxy actions are executed through this method.  Automatically fires the "before" + action event
-<b>Deprecated</b> load method using old method signature. See {@doRequest} for preferred method.
-buildUrl
-Destroys the proxy by purging any event listeners and cancelling any active requests.
 This DataReader's configured metadata as passed to the constructor.
 Abstract method created in extension's buildExtractors impl.
 Abstract method created in extension's buildExtractors impl.
@@ -103,8 +97,6 @@ abstract method meant to be overridden by all DataWriter extensions.  It's the e
 Converts a Record to a hash, taking into account the state of the Ext.data.Record along with configuration properties
 Converts a {@link Ext.data.DataWriter#toHash Hashed} {@link Ext.data.Record} to fields-array array suitable
 DirectProxy implementation of {@link Ext.data.DataProxy#doRequest}
-Clears any existing grouping and refreshes the data using the default sort.
-Groups the data by the specified field.
 The Connection object (Or options parameter to {@link Ext.Ajax#request}) which this HttpProxy
 Return the {@link Ext.data.Connection} object being used by this Proxy.
 Used for overriding the url used for a single request.  Designed to be called during a beforeaction event.  Calling setUrl
@@ -121,7 +113,6 @@ Final action of a write event.  Apply the written data-object to params.
 Implements abstract Ext.data.DataWriter#createRecord
 Implements abstract Ext.data.DataWriter#updateRecord
 Implements abstract Ext.data.DataWriter#destroyRecord
-MemoryProxy implementation of DataProxy#doRequest
 Generate a constructor for a specific Record layout.
 Generates a sequential id. This method is typically called when a record is {@link #create}d
 <p><b>This property is stored in the Record definition's <u>prototype</u></b></p>
@@ -132,9 +123,6 @@ The unique ID of the Record {@link #Record as specified at construction time}.
 Readonly flag - true if this Record has been modified.
 This object contains a key and value storing the original values of all modified
 <tt>true</tt> when the record does not yet exist in a server-side database (see
-HttpProxy implementation of DataProxy#doRequest
-Callback for read actions
-Callback for write actions
 Default sort that does nothing
 The regular expression used to strip tags
 Strips all HTML tags to sort on text only
@@ -334,11 +322,6 @@ Initialization for the drag frame element.  Must be called in the
 Resizes the drag frame to the dimensions of the clicked object, positions
 The proxy is automatically resized to the dimensions of the linked
 Returns the data object associated with this drag source
-Template method which should be overridden by each DragTracker instance. Called when the user first clicks and
-Template method which should be overridden by each DragTracker instance. Called when a drag operation starts
-Template method which should be overridden by each DragTracker instance. Called whenever a drag has been detected.
-Template method which should be overridden by each DragTracker instance. Called when a drag operation has been completed
-Returns the drag target
 This property contains the data representing the dragged object. This data is set up by the implementation
 Called when a mousedown occurs in this container. Looks in {@link Ext.dd.Registry}
 Called once drag threshold has been reached to initialize the proxy element. By default, it clones the
@@ -412,26 +395,6 @@ Inserts an html fragment into this element
 The DOM element
 The DOM element ID
 Sets the passed attributes as attributes of this element (a style attribute can be a string, object or function)
-The default unit to append to CSS values where a unit isn't provided (defaults to px).
-Returns true if this element matches the passed simple selector (e.g. div.some-class or span:first-child)
-Tries to focus the element. Any exceptions are caught and ignored.
-Tries to blur the element. Any exceptions are caught and ignored.
-Returns the value of the "value" attribute
-Appends an event handler to this element.  The shorthand version {@link #on} is equivalent.
-Removes an event handler from this element.  The shorthand version {@link #un} is equivalent.
-Removes all previous added listeners from this element
-Recursively removes all previous added listeners from this element and its children
-<p>Updates the <a href="http://developer.mozilla.org/en/DOM/element.innerHTML">innerHTML</a> of this Element
-Tests various css rules/browsers to determine if this element uses a border box
-<p>Removes this element's dom reference.  Note that event and cache removal is handled at {@link Ext#removeNode}</p>
-Sets up event handlers to call the passed functions when the mouse is moved into and out of the Element.
-Returns true if this element is an ancestor of the passed element
-Returns the value of a namespaced attribute from the element's underlying DOM node.
-Returns the value of an attribute from the element's underlying DOM node.
-Update the innerHTML of this element
-Appends an event handler (shorthand for {@link #addListener}).
-Removes an event handler from this element (see {@link #removeListener} for additional notes).
-true to automatically adjust width and height settings for box-model issues (default to true)
 Gets the current X position of the element based on page coordinates.  Element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).
 Gets the current Y position of the element based on page coordinates.  Element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).
 Gets the current position of the element based on page coordinates.  Element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).
@@ -548,9 +511,6 @@ Applies the supplied <code>values</code> to the template and appends
 Applies the supplied values to the template and overwrites the content of el with the new node(s).
 Alias for {@link #applyTemplate}
 Creates a template from the passed element's value (<i>display:none</i> textarea, preferred) or innerHTML.
-<p>Sends an HTTP request to a remote server.</p>
-Determine whether this object has a request outstanding.
-Aborts any outstanding request.
 Cancels any pending timeout and queues a new one
 Cancel the last queued timeout
 Bulgarian Translation
@@ -578,19 +538,11 @@ Swedish translation (utf8-encoding)
 List compiled by KillerNay on the extjs.com forums.
 List compiled by mystix on the extjs.com forums.
 Vietnamese translation
-Returns the current value for a key
-Clears a value from the state
-Sets the value for a key
-Decodes a string previously encoded with {@link #encodeValue}.
-Encodes a value including type information.  Decode with {@link #decodeValue}.
 Configures the default state provider for your application
 Returns the current value for a key
 Sets the value for a key
 Clears a value from the state
 Gets the currently configured state provider
-Enables the repeater and allows events to fire.
-Disables the repeater and stops events from firing.
-Convenience function for setting disabled/enabled by boolean.
 Create a cookie with the specified name and value. Additional settings
 Retrieves cookies that are accessible by the current page. If a cookie
 Removes a cookie with the provided name from the browser
@@ -612,45 +564,8 @@ Converts the first character only of a string to upper case
 The id of the hidden field required for storing the current history token.
 The id of the iframe required by IE to manage the history stack.
 Initialize the global History instance.
-Add a new token to the history stack. This can be any arbitrary value, although it would
-Programmatically steps back one step in browser history (equivalent to the user pressing the Back button).
-Programmatically steps forward one step in browser history (equivalent to the user pressing the Forward button).
-Retrieves the currently-active history token.
 True to stop the event from bubbling and prevent the default browser action if the
 Add a new binding to this KeyMap. The following config object properties are supported:
-Adds an item to the collection. Fires the {@link #add} event when complete.
-MixedCollection has a generic way to fetch keys if you implement getKey.  The default implementation
-Replaces an item in the collection. Fires the {@link #replace} event when complete.
-Adds all elements of an Array or an Object to the collection.
-Executes the specified function once for every item in the collection, passing the following arguments:
-Executes the specified function once for every key in the collection, passing each
-Returns the first item in the collection which elicits a true return value from the
-Inserts an item at the specified index in the collection. Fires the {@link #add} event when complete.
-Remove an item from the collection.
-Remove an item from a specified index in the collection. Fires the {@link #remove} event when complete.
-Removed an item associated with the passed key fom the collection.
-Returns the number of items in the collection.
-Returns index within the collection of the passed Object.
-Returns index within the collection of the passed key.
-Returns the item associated with the passed key OR index.
-Returns the item at the specified index.
-Returns the item associated with the passed key.
-Returns true if the collection contains the passed Object as an item.
-Returns true if the collection contains the passed Object as a key.
-Removes all items from the collection.  Fires the {@link #clear} event when complete.
-Returns the first item in the collection.
-Returns the last item in the collection.
-Sorts this collection by <b>item</b> value with the passed comparison function.
-Reorders each of the items based on a mapping from old index to new index. Internally this
-Sorts this collection by <b>key</b>s.
-Returns a range of items in this collection
-Filter the <i>objects</i> in this collection by a specific property.
-Filter by a function. Returns a <i>new</i> collection that has been filtered.
-Finds the index of the first matching object in this collection by a specific property/value.
-Find the index of the first matching object in this collection by a function.
-Returns a regular expression based on the given value and matching options. This is used internally for finding and filtering,
-Creates a shallow copy of this collection
-This method calls {@link #item item()}.
 Measures the size of the specified text
 Return a unique TextMetrics instance that can be bound directly to an element and reused.  This reduces
 <p><b>Only available on the instance returned from {@link #createInstance}, <u>not</u> on the singleton.</b></p>
@@ -662,11 +577,6 @@ Returns the width in pixels of the passed text, or the width of the text in this
 Read-only. True if this button is hidden
 Read-only. True if this button is disabled
 Read-only. True if this button is pressed (only if enableToggle = true)
-Sets a single style value on the Chart instance.
-Resets all styles on the Chart instance.
-Sets the styles on all series in the Chart.
-Changes the data store bound to this chart and refreshes it.
-Sets the url for installing flash if it doesn't exist. This should be set to a local resource.
 This Component's initial configuration specification. Read-only.
 Registers a component.
 Unregisters a component.
@@ -727,39 +637,8 @@ init : function(grid){
 Locks the selections.
 Unlocks the selections.
 Returns true if the selections are locked.
-initEvents : function(){
 Optional. A function which returns displayable data when passed the following parameters:
 An Array of {@link Ext.grid.Column Column definition} objects representing the configuration
-Returns the id of the column at the specified index.
-<p>Reconfigures this column model according to the passed Array of column definition objects.
-Returns the column for a specified id.
-Returns the index for a specified column id.
-Moves a column from one position to another.
-Returns the number of columns.
-Returns the column configs that return true by the passed function that is called
-Returns true if the specified column is sortable.
-Returns true if the specified column menu is disabled.
-Returns the rendering (formatting) function defined for the column.
-Sets the rendering (formatting) function for a column.  See {@link Ext.util.Format} for some
-Returns the width for the specified column.
-Sets the width for a column.
-Returns the total width of all columns.
-Returns the header for the specified column.
-Sets the header for a column.
-Returns the tooltip for the specified column.
-Sets the tooltip for a column.
-Returns the dataIndex for the specified column.
-Sets the dataIndex for a column.
-Finds the index of the first matching column for the given dataIndex.
-Returns true if the cell is editable.
-Returns the editor defined for the cell/column.
-Sets if a column is editable.
-Returns <tt>true</tt> if the column is <code>{@link Ext.grid.Column#hidden hidden}</code>,
-Returns <tt>true</tt> if the column is <code>{@link Ext.grid.Column#fixed fixed}</code>,
-Returns true if the column can be resized
-Sets if a column is hidden.
-Sets the editor for a column and destroys the prior editor.
-Destroys this column model by purging any event listeners, and removing any editors.
 <p>The provided implementation of the getDragData method which collects the data to be dragged from the GridPanel on mousedown.</p>
 <p>The provided implementation of the onInitDrag method. Sets the <tt>innerHTML</tt> of the drag proxy which provides the "picture"
 An empty immplementation. Implement this to provide behaviour after a repair of an invalid drop. An implementation might highlight
@@ -785,7 +664,6 @@ The Panel's footer {@link Ext.Element Element}. Read-only.
 <p>A {@link Ext.Toolbar Toolbar} object, a Toolbar config, or an array of
 The event to listen to for resizing in layouts. Defaults to <tt>'bodyresize'</tt>.
 The proxy Element that is resized in place of the real Element during the resize operation.
-Perform a manual resize and fires the 'resize' event.
 Renders the thumb into a slider
 Enables the thumb if it is currently disabled
 Disables the thumb if it is currently enabled
@@ -806,22 +684,6 @@ this.dd.endDrag = this.onEndProxyDrag.createDelegate(this);
 this.dragSpecs = {};
 this.placement = placement || (this.el.getX() > this.resizingEl.getX() ? Ext.SplitBar.LEFT : Ext.SplitBar.RIGHT);
 this.placement = placement || (this.el.getY() > this.resizingEl.getY() ? Ext.SplitBar.TOP : Ext.SplitBar.BOTTOM);
-Get the adapter this SplitBar uses
-Set the adapter this SplitBar uses
-Gets the minimum size for the resizing element
-Sets the minimum size for the resizing element
-Gets the maximum size for the resizing element
-Sets the maximum size for the resizing element
-Sets the initialize size for the resizing element
-Destroy this splitbar.
-Called before drag operations to get the current size of the resizing element.
-Called after drag operations to set the size of the resizing element.
-Orientation constant - Create a vertical SplitBar
-Orientation constant - Create a horizontal SplitBar
-Placement constant - The resizing element is to the left of the splitter element
-Placement constant - The resizing element is to the right of the splitter element
-Placement constant - The resizing element is positioned above the splitter element
-Placement constant - The resizing element is positioned under splitter element
 Initialize the global QuickTips instance and prepare any quick tips.
 Enable quick tips globally.
 Disable quick tips globally.
@@ -832,36 +694,16 @@ Removes any registered quick tip from the target element and destroys it.
 Alias of {@link #register}.
 Used to create the text that appears in the Tip's body. By default this just returns
 When a Tooltip is configured with the <code>{@link #delegate}</code>
-The loader used by this node (defaults to using the tree's defined loader)
-Returns true if this node is currently loading
-Returns true if this node has been loaded
-Trigger a reload for this node
 The TreePanel for this drag zone
 The TreePanel for this drop zone
 Arbitrary data that can be associated with this tree and will be included in the event object that gets
 Filter the data by a specific attribute.
 Filter by a function. The passed function will be called with each
 Clears the current filter. Note: with the "remove" option
-Load an {@link Ext.tree.TreeNode} from the URL specified in the constructor.
 Read-only. The text for this node. To change it use <code>{@link #setText}</code>.
 True if this node is disabled.
 True if this node is hidden.
-Read-only. The UI for this node
-Returns true if this node is expanded
-Returns the UI object for this node.
 The root node of this tree.
-Select a node.
-Deselect a node.
-Clear all selections
-Get the selected node
-Returns true if the node is selected
-Selects the node above the selected node in the tree, intelligently walking the nodes
-Selects the node above the selected node in the tree, intelligently walking the nodes
-Select a node.
-Deselect a node.
-Clear all selections
-Returns true if the node is selected
-Returns an array of the selected nodes
 elements : 'header,body',
 frame : true,
 floating : true,

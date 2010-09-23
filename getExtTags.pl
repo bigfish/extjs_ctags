@@ -38,6 +38,7 @@ my $singleton = 0;
 my $static = 0;
 my @infolines = ();
 my $in_doc_comment = 0;
+my $ignoreComment = 0;
 
 foreach(@lines){
 	chomp;
@@ -50,6 +51,9 @@ foreach(@lines){
 	}
     if ($line =~ /^\s*\/\/\s*private/){
         $private = 1;
+        next;
+    }
+    if ($ignoreComment && $line =~ /\s*\*/){
         next;
     }
     
@@ -170,6 +174,11 @@ foreach(@lines){
 		#print "found type: $1\n";
 		$type = $1;
 	}
+	#event declaration (ignore)
+	if ($line =~ /^\s*\*\s*\@event\s+/g) {
+        $ignoreComment = 1;
+        next;
+	}
 	#static marker
 	if ($line =~ /^\s*[\*]?\s*\@static/g) {
 		$static = 1;
@@ -180,6 +189,7 @@ foreach(@lines){
 		#set flag to capture next match
 		$getMember = 1;
         $in_doc_comment = 0;
+        $ignoreComment = 0;
 	}
 
 
