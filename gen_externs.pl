@@ -3,17 +3,17 @@ $tags_file=shift;
 #load global classes to avoid redeclaring
 $globals_file="global_classes.txt";
 
-my %externs;
+my %externs = ();
 
 open(HANDLE, $tags_file) || die ("could not open file $tags_file");
 my @taglines = <HANDLE>;
+my @outlines = ();
 close(HANDLE);
 
 foreach(@taglines){
 	my $tagline = $_;
 	my $tagname = "";
 	my @namespace;
-	my $class = "";
 	my $type = "";
 	my $link = "";
 	my $singleton = 0;
@@ -24,13 +24,111 @@ foreach(@taglines){
 	my $extends;
 	my $return;
     my $args;
+
 	#functions
-	if( $tagline =~ /^([^\t]*)\t([^\t]*)\s\/.*\$\/;"\s([a-z])\sclass\:([\S]+).*link\:([\S]*)/){
+	if( $tagline =~ /^([^\t]*)\t([^\t]*)\t.*\$\/;"\t([a-z]).*link\:([\S]*)/){
 		$tagname = $1;
 		$type = $3;
-		$link = $5;
-		@namespace = split(/\./, $link);
-		$class = pop(@namespace);
+		$link = $4;
+		if($link =~ /\./){
+			@namespace = split(/\./, $link);
+		} else {
+			@namespace = ($link);
+		}
+		$ns_len = scalar @namespace;
+
+		if($type =~ /c/){
+			if(!exists $externs{$link} && !is_external($link)){
+				push(@outlines, "/**\n");
+				push(@outlines, " * \@constructor\n");
+				if ($tagline =~ /inherits\:([^\t]+)\t/){
+					push(@outlines, " * \@extends {$1}\n");
+				}
+				$args = getFnMeta($tagline);
+				push(@outlines, " */\n");
+				$externs{$link} = "function () {};";
+				push(@outlines, "$link = function ($args) {};\n");
+				#also create a typedef for the class 
+				#if(!exists $externs{$tagname} && !is_external($tagname)){
+					#push(@outlines, "/** \@typedef {Object} */\n";
+					#push(@outlines, "var $tagname;\n";
+					#$externs{$tagname} = 1;
+				#}
+			}
+		}
+
+
+		if($type =~	/m/){
+			#method
+			#methods have link == class which contains them
+			#attach methods to the prototype of the constructor,
+			#except static methods ( which are simply members of the 'class' object)
+			if ($tagline =~ /\tisstatic\:yes/){
+				$extern = "$link\.$tagname";
+			} else {
+				$extern = "$link\.prototype\.$tagname";
+			}
+			if(!exists $externs{$extern} && !is_external($tagname)){
+				push(@outlines, "/**\n");
+				$args = getFnMeta($tagline);
+				#if has type: use type as return
+				if($tagline =~ /\ttype\:([^\t]*)/){
+					$return = $1;
+					$return = convertType($return);
+					push(@outlines, " * \@return {$return}\n");
+				}
+				push(@outlines, " */\n");
+				push(@outlines, "$extern = function($args){};\n");
+			}
+		
+		}
+		if ($type =~ /v/){
+			$extern = "$link\.$tagname";
+			if(!exists $externs{$extern} && !is_external($tagname)){
+				#get type of var
+				if($tagline =~ /\ttype\:(\S*)/){
+					$type_spec = $1;
+					$type_spec = convertType($type_spec);
+					$def_val = getDefVal($type_spec);
+					push(@outlines, "/**\n");
+					push(@outlines, " * \@type {$type_spec}\n");
+					push(@outlines, " */\n");
+					if($def_val eq "undefined"){
+						push(@outlines, "$extern;\n");
+					} else {
+						push(@outlines, "$extern = $def_val;\n");
+					}
+				}
+			}
+		}
+	}
+}
+
+# do a second pass to fill in namespaces
+# they must be output before the classes which depend on them
+foreach(@taglines){
+	my $tagline = $_;
+	my $tagname = "";
+	my @namespace;
+	my $type = "";
+	my $link = "";
+	my $singleton = 0;
+	my $extern;
+	my $ns_len;
+	my $namespaceStr;
+	my @namespaceDecl;
+	my $extends;
+	my $return;
+    my $args;
+	if( $tagline =~ /^([^\t]*)\t([^\t]*)\t.*\$\/;"\t([a-z]).*link\:([\S]*)/){
+		$tagname = $1;
+		$type = $3;
+		$link = $4;
+		if($link =~ /\./){
+			@namespace = split(/\./, $link);
+		} else {
+			@namespace = ($link);
+		}
 		$ns_len = scalar @namespace;
 		#create Namespace component objects if they do not exist
 		@namespaceDecl = ();
@@ -55,75 +153,19 @@ foreach(@taglines){
 			pop(@namespace);
 			$ns_len = scalar(@namespace);
 		}
-		#now reverse the namespace declarations so they are in the right order
-		@namespaceDecl = reverse(@namespaceDecl);
-		foreach $ns(@namespaceDecl){
-			print $ns;
-		}
-		if($type =~ /c/){
-			#class have link == full class name
-			if(!exists $externs{$link} && !is_external($link)){
-				print "/**\n";
-				print " * \@constructor\n";
-				if ($tagline =~ /inherits\:([^\t]+)\t/){
-					print " * \@extends {$1}\n";
-				}
-				$args = getFnMeta($tagline);
-				print " */\n";
-				$externs{$link} = "function () {};";
-				print "$link = function ($args) {};\n";
-				#also create a typedef for the class 
-				if(!exists $externs{$tagname} && !is_external($tagname)){
-					print "/** \@typedef {".$link."} */\n";
-					print "var $tagname;\n";
-					$externs{$tagname} = 1;
-				}
-			}
-		}
-		if($type =~	/m/){
-			#method
-			#methods have link == class which contains them
-			#attach methods to the prototype of the constructor,
-			#except static methods ( which are simply members of the 'class' object)
-			if ($tagline =~ /\tisstatic\:yes/){
-				$extern = "$link\.$tagname";
-			} else {
-				$extern = "$link\.prototype\.$tagname";
-			}
-			if(!exists $externs{$extern} && !is_external($tagname)){
-				print "/**\n";
-				$args = getFnMeta($tagline);
-				#if has type: use type as return
-				if($tagline =~ /\ttype\:([^\t]*)/){
-					$return = $1;
-					$return = convertType($return);
-					print " * \@return {$return}\n";
-				}
-				print " */\n";
-				print "$extern = function($args){};\n";
-			}
-		
-		}
-		if ($type =~ /v/){
-			$extern = "$link\.$tagname";
-			if(!exists $externs{$extern} && !is_external($tagname)){
-				#get type of var
-				if($tagline =~ /\ttype\:(\S*)/){
-					$type_spec = convertType($1);
-					$def_val = getDefVal($type_spec);
-					print "/**\n";
-					print " * \@type {$type_spec}\n";
-					print " */\n";
-					if($def_val eq "undefined"){
-						print "$extern;\n";
-					} else {
-						print "$extern = $def_val;\n";
-					}
-				}
-			}
-		}
+	}
+	#now reverse the namespace declarations so they are in the right order
+	@namespaceDecl = reverse(@namespaceDecl);
+	foreach $ns(@namespaceDecl){
+		print $ns;
 	}
 }
+
+#now print outlines
+foreach $outline(@outlines){
+	print $outline;
+}
+
 sub is_external
 {
 	my $check = shift;
@@ -176,7 +218,7 @@ sub getFnMeta
                         $pname =~ s/\*$// ;
                         $ptype = '...' . $ptype;
                     }
-					print " * \@param {$ptype} $pname \n";
+					push(@outlines, " * \@param {$ptype} $pname \n");
 
                     #add pname to args
                     if ($args eq ""){
