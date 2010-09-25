@@ -57,7 +57,7 @@ foreach(@taglines){
 			}
 			if (!exists $externs{$namespaceStr}){
 				if ($namespaceStr =~ /\./){
-					$extern_js = "$namespaceStr = {};\n");
+					$extern_js = "$namespaceStr = {};\n";
 					@deps = getNSDeps($namespaceStr);
 				} else {
 					if(!is_external($namespaceStr)){
@@ -130,7 +130,7 @@ foreach(@taglines){
 					push(@extern_jsdoc, " * \@return {$return}\n");
 				}
 				push(@extern_jsdoc, " */\n");
-				$extern_js = "$extern = function($args){};\n");
+				$extern_js = "$extern = function($args){};\n";
 
 				#construct extern data object
 				$externs{$extern} = { jsdoc => @extern_jsdoc, js => $extern_js, deps => @meta{'deps'}};
@@ -145,7 +145,7 @@ foreach(@taglines){
 					$type_spec = $1;
 					#get jsdoc style type declaration
 					$type_spec = convertType($type_spec);
-					push($extern_deps, $type_spec);
+					push(@extern_deps, $type_spec);
 					#get default value
 					$def_val = getDefVal($type_spec);
 					push(@extern_jsdoc, "/**\n");
@@ -160,7 +160,7 @@ foreach(@taglines){
 				}
 			}
 			#construct extern object
-			$externs{$extern} = { jsdoc => @extern_jsdoc, js => $extern_js, deps => @meta{'deps'}};
+			$externs{$extern} = { jsdoc => \@extern_jsdoc, js => $extern_js, deps => @meta{'deps'}};
 		}
 	}
 }
@@ -169,12 +169,16 @@ foreach(@taglines){
 #TODO
 
 # output
-foreach $myextern(@externs){
+
+foreach $extern_key(keys %externs){
+
+	$jsdocs = $externs{$extern_key}{'jsdoc'};
 	
-	foreach $jsdoc_line(@myextern{'jsdoc'}){
+	foreach $jsdoc_line( @$jsdocs ){
 		print $jsdoc_line;
 	}
-	print $myextern{'js'};
+	#}
+	print $externs{$extern_key}{'js'};
 
 }
 
@@ -186,7 +190,7 @@ sub getNSDeps
 	#split on dots
 	@namespace = split(/\./, $namespace);
 	#lose last bit .. this is the method, class, or var itself
-	pop(@namespace)
+	pop(@namespace);
 	$ns_len = scalar(@namespace);
 	$ns_idx = 0;
 	$ns_base = "";
