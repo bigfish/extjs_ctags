@@ -70,7 +70,8 @@ foreach(@taglines){
 				$externs{$namespaceStr} = {
 					jsdoc => "/** @type {Object} */\n",
 					js => $extern_js,
-					deps => @deps
+					deps => @deps,
+					symbol => $namespaceStr
 				}
 			}
 			#decrement 
@@ -100,7 +101,8 @@ foreach(@taglines){
 				$externs{$link} = {
 					jsdoc => @extern_jsdoc,
 					js => "$link = function ($args) {};\n",
-					deps => @meta{'deps'}
+					deps => @meta{'deps'},
+					symbol => $link
 				};
 			}
 
@@ -110,12 +112,7 @@ foreach(@taglines){
 			#attach methods to the prototype of the constructor,
 			#except static methods ( which are simply members of the 'class' object)
 			
-			if ($tagline =~ /\tisstatic\:yes/){
-				$extern = "$link\.$tagname";
-			} else {
-				#add method to constructor prototype
-				$extern = "$link\.prototype\.$tagname";
-			}
+			$extern = "$link\.$tagname";
 
 			if(!exists $externs{$extern} && !is_external($tagname)){
 
@@ -130,10 +127,21 @@ foreach(@taglines){
 					push(@extern_jsdoc, " * \@return {$return}\n");
 				}
 				push(@extern_jsdoc, " */\n");
-				$extern_js = "$extern = function($args){};\n";
+
+				if ($tagline =~ /\tisstatic\:yes/){
+					$extern_js = "$link\.$tagname = function($args){};\n";
+				} else {
+					#add method to constructor prototype
+					$extern_js = "$link\.prototype\.$tagname = function($args){};\n";
+				}
 
 				#construct extern data object
-				$externs{$extern} = { jsdoc => @extern_jsdoc, js => $extern_js, deps => @meta{'deps'}};
+				$externs{$extern} = { 
+					jsdoc => @extern_jsdoc,
+				   	js => $extern_js,
+				   	deps => @meta{'deps'},
+					symbol => $extern
+				};
 			}
 		
 		} elsif ($type =~ /v/){ #vars
@@ -158,29 +166,47 @@ foreach(@taglines){
 						$extern_js = "$extern = $def_val;\n";
 					}
 				}
+				#construct extern object
+				$externs{$extern} = { 
+					jsdoc => \@extern_jsdoc,
+					js => $extern_js,
+					deps => @meta{'deps'},
+					symbol => $extern
+				};
 			}
-			#construct extern object
-			$externs{$extern} = { jsdoc => \@extern_jsdoc, js => $extern_js, deps => @meta{'deps'}};
 		}
 	}
 }
 
 # sort deps
-#TODO
-
-# output
-
-foreach $extern_key(keys %externs){
-
-	$jsdocs = $externs{$extern_key}{'jsdoc'};
-	
-	foreach $jsdoc_line( @$jsdocs ){
-		print $jsdoc_line;
-	}
-	#}
-	print $externs{$extern_key}{'js'};
-
+# copy externs hash into an array
+my @unsorted_externs = %externs;
+#make another copy  so we don't change the ordering while iterating
+my @sorted_externs = @unsorted_externs;
+# for each extern:
+foreach $unsorted_extern(@unsorted_externs)
+{
+	print $unsorted_extern->{'symbol'} ."\n";
 }
+#  --> get a list of the dependencies
+#  --> for each dependency
+#  -------> find the index of the dependency in the externs
+#  -------> add that index to a list
+#  ---> get the largest index from that list
+#  ---> move the extern to a position in the externs just after that index
+#  repeat until no moves are required (set a flag when moving extern)
+
+#output
+#foreach $extern_key(keys %externs){
+
+	#$jsdocs = $externs{$extern_key}{'jsdoc'};
+	
+	#foreach $jsdoc_line( @$jsdocs ){
+		#print $jsdoc_line;
+	#}
+	#print $externs{$extern_key}{'js'};
+
+#}
 
 sub getNSDeps
 {
