@@ -19,6 +19,9 @@ touch $INFO_FILE
 
 $EXT/genExtTags $SRC $INFO_FILE >  $TMP_FILE
 
-$EXT/replacePointers.pl $TMP_FILE > $OUTPUT_DIR/tags
+$EXT/replacePointers.pl $TMP_FILE > $OUTPUT_DIR/tags_tmp
+
+#replace signatures of subclass constructors with superclass
+$EXT/replaceSignatures.pl $OUTPUT_DIR/tags_tmp > $OUTPUT_DIR/tags
 
 rm $TMP_FILE
