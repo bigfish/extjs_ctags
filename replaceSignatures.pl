@@ -7,6 +7,7 @@ open(HANDLE, $file) || die ("could not open file $file");
 my @lines = <HANDLE>;
 close(HANDLE);
 
+my %classes;
 my %subclasses;
 
 #collect the pairs of class and constructor tags into pairs 
@@ -24,6 +25,10 @@ foreach(@lines){
 		if ($type eq "c"){
 			if ($line =~ /\tinherits\:([^\t]*)/){
 				$superclass = $1;
+				#we only want the class name
+				if ($superclass =~ /\.([^\.]*)$/){
+					$superclass = $1;
+				} 
 				if (exists $subclasses{$class} ){
 					$subclasses{$class}->{'super'} = $superclass;
 				} else {
@@ -33,6 +38,7 @@ foreach(@lines){
 		} elsif ($type eq 'f') {
 			if ($line =~ /\tsignature\:\(([^\)]*)\)/){
 				$sig = $1;
+				#print "got sig $sig for $class \n";
 				if (exists $subclasses{$class} ){
 					$subclasses{$class}->{'sig'} = $1;
 				} else {
@@ -42,15 +48,48 @@ foreach(@lines){
 		}
 	}
 }
+my $supersig;
+foreach $cls ( keys %subclasses ) {
+	$supersig = getSignature($cls);
+	#print "derived sig $supersig for class $cls \n";
+	#replace signature value in tag
+	foreach(@lines){
+		chomp;
+		my $line = $_;
+		my $sig; 
+		my $class;
 
-foreach $cl ( keys %subclasses ) {
-	my $cl_super = $subclasses{$cl}->{'super'};
-	my $cl_sig = $subclasses{$cl}->{'sig'};
-	#we only care about classes which are subclasses
-	if ( $cl_super ne ""){
-		print "subclass: $cl inherits $cl_super \n";
-		#only inherit signature if signature is empty
-
+		if ($line =~ /^$cls/){
+			if ($line =~ /\tsignature\:[^\t]*/){
+				$line =~ s/\tsignature\:[^\t]*/\tsignature\:\($supersig\)/;
+			}
+		}
+		print $line . "\n";
 	}
 }
 
+sub getSignature
+{
+	my $cl = shift;
+	my $cl_sig = $subclasses{$cl}->{'sig'};
+	my $cl_super;
+
+	if (exists $subclasses{$cl}->{'super'}){
+		$cl_super = $subclasses{$cl}->{'super'};
+	} else {
+		#no superclass, return signature
+		return $cl_sig;
+	}
+
+	#we only care about classes which are subclasses
+	if ( $cl_super ne ""){
+		#print "subclass: $cl inherits $cl_super \n";
+		#only inherit signature if signature is empty
+		if ( $cl_sig =~ /^\s*$/){
+			$scl = getSignature( $cl_super );
+			return $scl;
+		} else {
+			return $cl_sig;
+		}
+	}
+}

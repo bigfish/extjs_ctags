@@ -24,6 +24,8 @@ my $parent_class = "";
 my $class_re;
 my $cons_re;
 my $cons_re2;
+my $cons_re3;
+my $cons_re4;
 my $inherit = "";
 my $sig;
 my $param_name;
@@ -118,7 +120,10 @@ foreach(@lines){
 
 		$cons_re = '^\s*'.$full_class.'\s*\=\s*function\s*\(([^)]*)\).*$';
 		$cons_re2 = '^\s*constructor\s*\:\s*function\s*\(([^)]*)\).*$';
-		if($line =~ /$cons_re/ || $line =~ /$cons_re2/) {
+		$cons_re3 = '^\s*'.$full_class.'\s*\=\s*Ext\.extend\(.*$';
+		$cons_re4 = '^\s*constructor\s*\:\s*Ext\.extend\(.*$';
+
+		if($line =~ /$cons_re/ || $line =~ /$cons_re2/ ) {
 			#print "CONSTRUCTOR: $_\n";
 			$typeToken = "f";
 				#construct signature
@@ -148,6 +153,20 @@ foreach(@lines){
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
 			print $tagStr."\n";
 			$getConstructor = 0;
+
+		} elsif ($line =~ /$cons_re3/ || $line =~ /$cons_re3/){
+
+			$typeToken = "f";
+
+			#construct tag
+			$tagStr = $class.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$parent_class;
+			#we have no sig for Ext.extend ...
+			$tagStr = $tagStr.$TAB.'signature:()';
+			#add link for help
+			$tagStr = $tagStr.$TAB.'link:'.$full_class;
+			print $tagStr."\n";
+			$getConstructor = 0;
+		
 		}
 	}
 	#get first line of member comment as description
