@@ -44,8 +44,13 @@ foreach(@lines){
 }
 
 foreach $cl ( keys %subclasses ) {
-	print "class: $cl \n";
-	print "	super: " . $subclasses{$cl}->{'super'} . "\n";
-	print "	sig: " . $subclasses{$cl}->{'sig'} . "\n";
+	my $cl_super = $subclasses{$cl}->{'super'};
+	my $cl_sig = $subclasses{$cl}->{'sig'};
+	#we only care about classes which are subclasses
+	if ( $cl_super ne ""){
+		print "subclass: $cl inherits $cl_super \n";
+		#only inherit signature if signature is empty
+
+	}
 }
 
