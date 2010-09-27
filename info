@@ -8,7 +8,6 @@ Removes worthless text nodes
 Direct access to the Updater {@link Ext.Updater#update} method. The method takes the same object
 Gets this element's {@link Ext.Updater Updater}
 Update the innerHTML of this element, optionally searching for and processing scripts
-Creates a proxy element of this element
 Gets the x,y coordinates specified by the anchor position on the element.
 Anchors an element to another element and realigns it when the window is resized.
 Remove any anchor to this element. See {@link #anchorTo}.
@@ -608,15 +607,6 @@ The type of failure detected will be one of these: {@link #CLIENT_INVALID},
 The XMLHttpRequest object used to perform the action.
 The decoded response object containing a boolean <tt style="font-weight:bold">success</tt> property and
 A {@link Ext.util.MixedCollection MixedCollection} containing all the Ext.form.Fields in this form.
-Called if combineErrors is true and a subfield's markInvalid method is called.
-Called if combineErrors is true and a subfield's clearInvalid method is called.
-Performs validation checks on each subfield and returns false if any of them fail validation.
-Takes an object containing error messages for contained fields, returning a combined error
-Sorts the internal fieldErrors MixedCollection by the order in which the fields are defined.
-Resets each field in the composite to their previous value
-Calls clearInvalid on all child fields. This is a convenience function and should not often need to be called
-Builds a label string from an array of subfield labels.
-Checks each field in the composite and returns true if any is dirty
 <p>The label Element associated with this Field. <b>Only available after this Field has been rendered by a
 Overridden and disabled. The editor element does not support standard valid/invalid marking. @hide
 Overridden and disabled. The editor element does not support standard valid/invalid marking. @hide

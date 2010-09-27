@@ -23,6 +23,7 @@ my $full_class_re = "";
 my $parent_class = "";
 my $class_re;
 my $cons_re;
+my $cons_re2;
 my $inherit = "";
 my $sig;
 my $param_name;
@@ -50,6 +51,10 @@ foreach(@lines){
 		next;
 	}
     if ($line =~ /^\s*\/\/\s*private/){
+        $private = 1;
+        next;
+    }
+    if ($line =~ /^\s*\/\/\s*inherit docs/){
         $private = 1;
         next;
     }
@@ -111,12 +116,34 @@ foreach(@lines){
 	# the class constructor has same name as class but is function type 
 	if ($getConstructor) {
 
-		$cons_re = '^\s*'.$full_class.'\s*=\s*function\(([^)]*)\).*$';
-		if($line =~ /$cons_re/) {
+		$cons_re = '^\s*'.$full_class.'\s*\=\s*function\s*\(([^)]*)\).*$';
+		$cons_re2 = '^\s*constructor\s*\:\s*function\s*\(([^)]*)\).*$';
+		if($line =~ /$cons_re/ || $line =~ /$cons_re2/) {
 			#print "CONSTRUCTOR: $_\n";
 			$typeToken = "f";
+				#construct signature
+				$sig = "(";
+				my $isfirstparam = 1;
+                my $numparams = scalar(@params);
+				for (my $p = 0; $p < $numparams; $p++ ) {
+
+                    my $param_name = $params[$p]{'name'};
+                    my $param_type = $params[$p]{'type'};
+
+					if ($isfirstparam) {
+						$sig .= '<+'.$param_name.":".$param_type.'+>' ;
+						$isfirstparam = 0;
+					} else {
+						$sig .= "," . '<+'.$param_name.":".$param_type.'+>' ;
+						#$sig .=  ", " . $param_type . " " . $param_name;
+					}
+				}
+				$sig .= ")";
 			#construct tag
 			$tagStr = $class.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$parent_class;
+			#if (length($sig) > 0) {
+				$tagStr = $tagStr.$TAB.'signature:'.$sig;
+			#}
 			#add link for help
 			$tagStr = $tagStr.$TAB.'link:'.$full_class;
 			print $tagStr."\n";
@@ -198,10 +225,16 @@ foreach(@lines){
 		if($line =~ /^\s*([a-zA-Z_\$][a-zA-Z_0-9\$]*)\s*:\s*(.*)$/) {
 			my $mName = $1;
 			my $mValue = $2;
+
+			if ($mName eq "constructor"){
+				next;
+			}
 			#check if function or property
 			if ($mValue =~ /function/) {
+
 				#print "found method: $mName \n";
 				$typeToken = "m";#method
+
 				#construct signature
 				$sig = "(";
 				my $isfirstparam = 1;
@@ -220,6 +253,7 @@ foreach(@lines){
 					}
 				}
 				$sig .= ")";
+
 			} else {
 				#is property
 				#print "found property: $mName \n";
@@ -298,6 +332,8 @@ foreach(@lines){
 							#skip privates
 							$private = 1;
 							next;
+						} elsif ($class eq "PropertyStore" && $mName eq "recordType"){
+							$type = "PropertyRecord";
 						}
 						#if ($class =~ /Date/ && $mName =~ /_xMonth/){
 						if ($type eq ""){
@@ -309,22 +345,19 @@ foreach(@lines){
 			}
 
 			#rename constructor to class name
-			if ($mName =~ /constructor/){
-				$mName = $class;
-				$typeToken = 'f';
-				$return = $class;
-			}
-
-			#construct tag
-			if ($mName =~ "constructor") {
-				$typeToken = "f";
-				$tagStr = $class.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$class;
-			} else {
+			#if ($mName =~ /constructor/){
+				#$mName = $class;
+				#$typeToken = 'f';
+				#$return = $class;
+				#$tagStr = $class.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$class;
+			#} else {
 				$tagStr = $mName.$TAB.$file.$TAB.'/^'.$_.'$/;"'.$TAB.$typeToken.$TAB.'class:'.$class;
-			}
+			#}
+
 			if (length($sig) > 0) {
 				$tagStr = $tagStr.$TAB.'signature:'.$sig;
 			}
+
 			#add return type as type
 			if (length($return) > 0) {
 				$tagStr = $tagStr.$TAB.'type:'.$return;
