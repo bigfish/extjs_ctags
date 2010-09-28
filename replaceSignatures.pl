@@ -21,7 +21,6 @@ foreach(@lines){
 	#get type token
 	if ($line =~ /^([A-Z]+[^\t]*)\t.*\/;"\t([a-z])/){
 		$class = $1;
-		print "CLASS: $class \n";
 		$type = $2;
 		if ($type eq "c"){#class
 			if ($line =~ /\tinherits\:([^\t]*)/){
@@ -29,7 +28,6 @@ foreach(@lines){
 				#we only want the class name
 				if ($superclass =~ /\.([^\.]*)$/){
 					$superclass = $1;
-					print "SUPERCLASS: $superclass \n";
 				} 
 				if (exists $subclasses{$class} ){
 					#add 'super' property to exisiting subclass hash ref
@@ -42,7 +40,6 @@ foreach(@lines){
 		} elsif ($type eq 'f') {#function
 			if ($line =~ /\tsignature\:\(([^\)]*)\)/){
 				$sig = $1;
-				#print "got sig $sig for $class \n";
 				if (exists $subclasses{$class} ){
 					#add sig property to subclass hash ref
 					$subclasses{$class}->{'sig'} = $1;
@@ -75,7 +72,6 @@ foreach(@lines){
 sub getSignature
 {
 	my $cl = shift;
-	print "getSignature($cl) \n";
 	my $cl_sig = $subclasses{$cl}->{'sig'};
 	#if there is a signature on the class, just return it
 	if ( $cl_sig !~ /^\s*$/){
