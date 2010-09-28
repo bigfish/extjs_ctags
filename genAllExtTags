@@ -24,4 +24,5 @@ $EXT/replacePointers.pl $TMP_FILE > $OUTPUT_DIR/tags_tmp
 #replace signatures of subclass constructors with superclass
 $EXT/replaceSignatures.pl $OUTPUT_DIR/tags_tmp > $OUTPUT_DIR/tags
 
+rm $OUTPUT_DIR/tags_tmp
 rm $TMP_FILE
