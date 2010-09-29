@@ -59,12 +59,23 @@ foreach(@taglines){
 }
 
 foreach $classname(keys %classes){
-	print "$classname: \n";
-	print "superclass: " . %{$classes{$classname}}->{'super'} . "\n";
-	my @jsdocs = @{%{$classes{$classname}}->{'meta'}->{'jsdoc'}};
-	print "jsdoc: @jsdocs \n";
+
+	print "class: $classname: \n";
+
+	my %class_meta = %{$classes{$classname}->{'meta'}};
+	my $args = $class_meta{'args'};
+	print "args: $args \n";
+	my @deps = @{$class_meta{'deps'}};
+
+	if (exists %{$classes{$classname}}->{'super'} ){
+		my $superclass = $classes{$classname}->{'super'};
+		print "superclass : $superclass \n";
+		#add superclass to dependencies
+		push(@deps, $superclass);
+	}
+	
+	print "deps: @deps \n";
 	#print "args: " . %{$classes{$classname}}->{'meta'}->{'args'} . "\n";
-	#print "deps:  @{%{$classes{$classname}}->{'meta'}->{'deps'}} \n";
 	#print "params:  @{%{$classes{$classname}}->{'meta'}->{'params'}} \n";
 }
 
@@ -415,7 +426,16 @@ sub getFnMeta
 					#add param to array of parameter jsdoc declarations
 					push(@fn_params, " * \@param {$ptype} $pname \n");
 					#add the type declaration as a dependency
-					push(@fn_deps, $ptype);
+					#extract classes from type spec
+					my @type_deps = extractTypeDeps($ptype);
+					foreach $type_dep(@type_deps){
+						if(grep $_ eq $type_dep, @fn_deps){
+							next;
+						} else {
+							push(@fn_deps, $type_dep);
+						}
+					}
+					#push(@fn_deps, $ptype);
                     #add pname to args
                     if ($args eq ""){
                         $args = $pname;
@@ -460,6 +480,28 @@ sub convertType
 	$jsdoc_type =~ s/([A-Za-z0-9_\$\.]*)\[\]/Array\.\<\1\>/g;
     #$jsdoc_type =~ s/Mixed/\*/g;
 	return $jsdoc_type;
+}
+
+sub extractTypeDeps
+{
+	my $typeStr = shift;
+	if($typeStr =~ /\(?([^\)]*)\)?/){
+		$typeStr = $1;
+	}
+	my @typeArr = split(/\|/, $typeStr);
+	#filter out js builtin objects
+	#they are not really dependencies
+	my @deps = ();
+	foreach $type(@typeArr){
+		#clean up quantifier markers
+		if($type =~ /(.*)\=$/){
+			$type = $1;
+		}
+		if($type ne "string" && $type ne "number" && $type ne "Array" && $type ne "Object" && $type ne "function()" && $type ne "boolean"){
+			push(@deps, $type);
+		}
+	}
+	return @deps;
 }
 
 sub getDefVal
