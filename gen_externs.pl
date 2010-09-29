@@ -75,20 +75,21 @@ foreach(@taglines){
 	}
 }
 # now add superclass (if any) to class dependencies
-foreach $classname(keys %classes){
-	print "CLASS $classname \n";
-	my %class_meta = %{$classes{$classname}->{'meta'}};
+#foreach $classname(keys %classes){
+	#print "CLASS $classname \n";
+	#my %class_meta = %{$classes{$classname}->{'meta'}};
 	#my $args = $class_meta{'args'};
-	my @deps = @{$class_meta{'deps'}};
+	#print "args :: $args \n";
+	##my @deps = @{$class_meta{'deps'}};
 
-	if (exists %{$classes{$classname}}->{'super'} ){
-		my $superclass = $classes{$classname}->{'super'};
-		#add superclass to dependencies
-		push(@deps, $superclass);
-	}
-	#print "deps: @deps \n";
-	#my @params = @{$class_meta{'params'}};
-}
+	#if (exists %{$classes{$classname}}->{'super'} ){
+		#my $superclass = $classes{$classname}->{'super'};
+		##add superclass to dependencies
+		#push(@{$class_meta{'deps'}}, $superclass);
+	#}
+	##print "deps: @deps \n";
+	##my @params = @{$class_meta{'params'}};
+#}
 
 #outlines buffers output
 my @outlines = ();
@@ -105,6 +106,7 @@ foreach(@taglines){
 	my $return;
 	my $args;
 	my @deps;
+	my @params;
 	my @extern_jsdoc;
 	my $extern_js;
 	my @externs_deps;
@@ -141,32 +143,38 @@ foreach(@taglines){
 				#class should have been parsed earlier
 				if (exists $classes{$extern} ){
 					print "FOUND CLASS $extern\n";
+
+					my $class_ref = $classes{$extern};
+					my %class_meta = %{$class_ref->{'meta'}};
+					my $args = $class_meta{'args'};
+
+					print "ARGS: $args \n";
+
+					@deps = @{$class_meta{'deps'}};
+					print "$extern DEPS: @deps \n";
+
+					@extern_deps = (@extern_deps, @deps);
+					print "ALL_DEPS: @extern_deps \n";
+					
+					@params = @{$class_meta{'params'}};
+					foreach $param(@params){
+						push(@extern_jsdoc, $param);
+					}
+					push(@extern_jsdoc, " */\n");
+
+					##construct data object for this extern 
+					
+					$externs{$externs} = {
+						jsdoc => \@extern_jsdoc,
+						js => "$extern = function ($args) {};\n",
+						deps => \@extern_deps,
+						symbol => $link
+					};
+
 				} else {
+					#this should not happen
 					print "COULD NOT FIND CLASS $extern \n";
 				}
-				#$meta = getFnMeta($tagline);
-
-				#$args = $meta->{'args'};
-				#print "ARGS: $args \n";
-
-				#@deps = @{$meta->{'deps'}};
-				#print "$link DEPS: @deps \n";
-
-				#@extern_deps = (@extern_deps, @deps);
-				#print "ALL_DEPS: @extern_deps \n";
-
-				#foreach $param(@{$meta->{'params'}}){
-					#push(@extern_jsdoc, $param);
-				#}
-				#push(@extern_jsdoc, " */\n");
-
-				##construct data object for this extern 
-				#$externs{$link} = {
-					#jsdoc => \@extern_jsdoc,
-					#js => "$link = function ($args) {};\n",
-					#deps => \@extern_deps,
-					#symbol => $link
-				#};
 
 			}
 
