@@ -2,220 +2,289 @@
 $tags_file=shift;
 #load global classes to avoid redeclaring
 $globals_file="global_classes.txt";
+#externs is a hash of hash objects where key is the symbol name (fully qualified)
+#and the value is a hash with the following structure
+#		jsdoc => ref to an array of lines which are the JSDoc comments
+#		js => "actual line of javascript;"
+#		deps => ref to an array of strings which are the dependencies of the symbol (as keys in the externs hash hash)
+#		symbol => same as the key
 
+my %classes = ();
 my %externs = ();
 
+# read tags file into @lines array
 open(HANDLE, $tags_file) || die ("could not open file $tags_file");
 my @taglines = <HANDLE>;
-my @outlines = ();
 close(HANDLE);
 
+#PREPARE
+#index the constructor functions 
 foreach(@taglines){
-	my $tagline = $_;
-	my $tagname = "";
-	my @namespace;
-	my $type = "";
-	my $link = "";
-	my $singleton = 0;
-	my $extern;
-	my $ns_len;
-	my $namespaceStr;
-	my $extends;
-	my $return;
-    my $args;
-	my @deps;
-	my @extern_jsdoc;
-	my $extern_js;
-	my @externs_deps;
-	my %meta;
+	chomp;
+	my $line = $_;
+	my $sig; 
+	my $class;
+	my $type;
 	my $superclass;
 
-	if( $tagline =~ /^([^\t]*)\t([^\t]*)\t.*\$\/;"\t([a-z]).*link\:([\S]*)/){
+	#get type token
+	if ($line =~ /^([A-Z]+[^\t]*)\t.*\/;"\t([a-z]).*link\:([\S]*)/){
 
-		$tagname = $1;
-		$type = $3;
-		$link = $4;
+		$class = $1;
+		$type = $2;
+		$full_class = $3;
 
-		@extern_jsdoc = ();
-		$extern_js = "";
-		@extern_deps = ();
-
-		#classes / constructors
-		if($type =~ /c/){
-
-			if(!exists $externs{$link} && !is_external($link)){
-
-				push(@extern_jsdoc, "/**\n");
-				push(@extern_jsdoc, " * \@constructor\n");
-				if ($tagline =~ /inherits\:([^\t]+)\t/) {
-					$superclass = $1;
-					push(@extern_jsdoc, " * \@extends {$superclass}\n");
-					push(@extern_deps, $superclass);
+		if ($type eq "c"){#class
+			
+			if ($line =~ /\tinherits\:([^\t]*)/){
+				$superclass = $1;
+				if (exists $classes{$class} ){
+					#add 'super' property to exisiting subclass hash ref
+					$classes{$class}->{'super'} = $superclass;
+				} else {
+					#create new subclass hash with super property
+					$classes{$class} = { 'super' => $superclass };
 				}
-				#parse constructor function for parameters, args, and deps
-				$meta = getFnMeta($tagline);
-				$args = $meta->{'args'};
-				@deps = @{$meta->{'deps'}};
-				print "$link DEPS: @deps \n";
-				@extern_deps = (@extern_deps, @deps);
-				#print "$link DEPS: @extern_deps \n";
-				foreach $param(@{$meta->{'params'}}){
-					push(@extern_jsdoc, $param);
-				}
-				push(@extern_jsdoc, " */\n");
-
-				#construct data object for this extern 
-				$externs{$link} = {
-					jsdoc => \@extern_jsdoc,
-					js => "$link = function ($args) {};\n",
-					deps => \@extern_deps,
-					symbol => $link
-				};
-
 			}
 
-		} elsif($type =~ /m/){ #method
+		} elsif ($type eq 'f') {#function
 
-			#methods have link == class which contains them
-			#attach methods to the prototype of the constructor,
-			#except static methods ( which are simply members of the 'class' object)
-			
-			#$extern = "$link\.$tagname";
+			if (exists $classes{$class} ){
+				$classes{$class}->{'meta'} = getFnMeta($line);
+			} else {
+				$classes{$class} = {'meta' => getFnMeta($line) };
+			}
+		}
+	}
+}
 
-			#if(!exists $externs{$extern} && !is_external($tagname)){
+foreach $classname(keys %classes){
+	print "$classname: \n";
+	print "superclass: " . %{$classes{$classname}}->{'super'} . "\n";
+	my @jsdocs = @{%{$classes{$classname}}->{'meta'}->{'jsdoc'}};
+	print "jsdoc: @jsdocs \n";
+	#print "args: " . %{$classes{$classname}}->{'meta'}->{'args'} . "\n";
+	#print "deps:  @{%{$classes{$classname}}->{'meta'}->{'deps'}} \n";
+	#print "params:  @{%{$classes{$classname}}->{'meta'}->{'params'}} \n";
+}
+
+#outlines buffers output
+my @outlines = ();
+
+#foreach(@taglines){
+	#my $tagline = $_;
+	#my $tagname = "";
+	#my $type = "";
+	#my $link = "";
+	#my $singleton = 0;
+	#my $extern;
+	#my $ns_len;
+	#my $extends;
+	#my $return;
+    #my $args;
+	#my @deps;
+	#my @extern_jsdoc;
+	#my $extern_js;
+	#my @externs_deps;
+	#my %meta;
+	#my $superclass;
+	
+	##generic pattern to parse taglines
+	#if( $tagline =~ /^([^\t]*)\t([^\t]*)\t.*\$\/;"\t([a-z]).*link\:([\S]*)/){
+
+		#$tagname = $1;
+		#$type = $3;
+		#$extern = $4;#this is the fully qualified classname
+
+		##reset value objects
+		#@extern_jsdoc = ();
+		#$extern_js = "";
+		#@extern_deps = ();
+		#@deps = ();
+
+		##classes / constructors
+		#if($type =~ /c/){
+
+			#if(!exists $externs{$extern} && !is_external($extern)){
 
 				#push(@extern_jsdoc, "/**\n");
-				#$meta = getFnMeta($tagline);
-				#$args = $meta->{'args'};
-				#@extern_deps = @{$meta->{'deps'}};
+				#push(@extern_jsdoc, " * \@constructor\n");
+				#if ($tagline =~ /inherits\:([^\t]+)\t/) {
+					#$superclass = $1;
+					#push(@extern_jsdoc, " * \@extends {$superclass}\n");
+					##add the superclass to the dependencies
+					#push(@extern_deps, $superclass);
+				#}
 
-				##print "deps: @deps \n";
-				##if has type: use type as return
-				#if($tagline =~ /\ttype\:([^\t]*)/){
-					#$return = $1;
-					#$return = convertType($return);
-					#push(@extern_jsdoc, " * \@return {$return}\n");
-					#push(@extern_deps, "{$return}");
+				##parse constructor function for parameters, args, and deps
+				#$meta = getFnMeta($tagline);
+
+				#$args = $meta->{'args'};
+				#print "ARGS: $args \n";
+
+				#@deps = @{$meta->{'deps'}};
+				#print "$link DEPS: @deps \n";
+
+				#@extern_deps = (@extern_deps, @deps);
+				#print "ALL_DEPS: @extern_deps \n";
+
+				#foreach $param(@{$meta->{'params'}}){
+					#push(@extern_jsdoc, $param);
 				#}
 				#push(@extern_jsdoc, " */\n");
 
-				#if ($tagline =~ /\tisstatic\:yes/){
-					#$extern_js = "$link\.$tagname = function($args){};\n";
-				#} else {
-					##add method to constructor prototype
-					#$extern_js = "$link\.prototype\.$tagname = function($args){};\n";
-				#}
-
-				##construct extern data object
-				#$externs{$extern} = { 
-					#jsdoc  => \@extern_jsdoc,
-					#js     => $extern_js,
-					#deps   => \@extern_deps,
-					#symbol => $extern
+				##construct data object for this extern 
+				#$externs{$link} = {
+					#jsdoc => \@extern_jsdoc,
+					#js => "$link = function ($args) {};\n",
+					#deps => \@extern_deps,
+					#symbol => $link
 				#};
-			#}
-		} elsif ($type =~ /v/){ #vars
-			#$extern = "$link\.$tagname";
-			#if(!exists $externs{$extern} && !is_external($tagname)){
-				##get type of var
-				#if($tagline =~ /\ttype\:(\S*)/){
-					#$type_spec = $1;
-					##get jsdoc style type declaration
-					#$type_spec = convertType($type_spec);
-					#push(@extern_deps, $type_spec);
-					##get default value
-					#$def_val = getDefVal($type_spec);
-					#push(@extern_jsdoc, "/**\n");
-					#push(@extern_jsdoc, " * \@type {$type_spec}\n");
-					#push(@extern_jsdoc, " */\n");
 
-					#if($def_val eq "undefined"){
-						#$extern_js = "$extern;\n";
-					#} else {
-						#$extern_js = "$extern = $def_val;\n";
+			#}
+
+		#} elsif($type =~ /m/){ #method
+
+			##methods have link == class which contains them
+			##attach methods to the prototype of the constructor,
+			##except static methods ( which are simply members of the 'class' object)
+			
+			##$extern = "$link\.$tagname";
+
+			##if(!exists $externs{$extern} && !is_external($tagname)){
+
+				##push(@extern_jsdoc, "/**\n");
+				##$meta = getFnMeta($tagline);
+				##$args = $meta->{'args'};
+				##@extern_deps = @{$meta->{'deps'}};
+
+				###print "deps: @deps \n";
+				###if has type: use type as return
+				##if($tagline =~ /\ttype\:([^\t]*)/){
+					##$return = $1;
+					##$return = convertType($return);
+					##push(@extern_jsdoc, " * \@return {$return}\n");
+					##push(@extern_deps, "{$return}");
+				##}
+				##push(@extern_jsdoc, " */\n");
+
+				##if ($tagline =~ /\tisstatic\:yes/){
+					##$extern_js = "$link\.$tagname = function($args){};\n";
+				##} else {
+					###add method to constructor prototype
+					##$extern_js = "$link\.prototype\.$tagname = function($args){};\n";
+				##}
+
+				###construct extern data object
+				##$externs{$extern} = { 
+					##jsdoc  => \@extern_jsdoc,
+					##js     => $extern_js,
+					##deps   => \@extern_deps,
+					##symbol => $extern
+				##};
+			##}
+		#} elsif ($type =~ /v/){ #vars
+			##$extern = "$link\.$tagname";
+			##if(!exists $externs{$extern} && !is_external($tagname)){
+				###get type of var
+				##if($tagline =~ /\ttype\:(\S*)/){
+					##$type_spec = $1;
+					###get jsdoc style type declaration
+					##$type_spec = convertType($type_spec);
+					##push(@extern_deps, $type_spec);
+					###get default value
+					##$def_val = getDefVal($type_spec);
+					##push(@extern_jsdoc, "/**\n");
+					##push(@extern_jsdoc, " * \@type {$type_spec}\n");
+					##push(@extern_jsdoc, " */\n");
+
+					##if($def_val eq "undefined"){
+						##$extern_js = "$extern;\n";
+					##} else {
+						##$extern_js = "$extern = $def_val;\n";
+					##}
+				##}
+				###construct extern object
+				##$externs{$extern} = { 
+					##jsdoc => \@extern_jsdoc,
+					##js => $extern_js,
+					##deps => \@extern_deps,
+					##symbol => $extern
+				##};
+			##}
+		#}
+	#}
+#}
+
+##namespaces
+#foreach(@taglines){
+	#my $tagline = $_;
+	#my $tagname = "";
+	#my @namespace;
+	#my $type = "";
+	#my $link = "";
+	#my $singleton = 0;
+	#my $extern;
+	#my $ns_len;
+	#my $namespaceStr;
+	#my $extends;
+	#my $return;
+	#my $args;
+	#my @deps;
+	#my @extern_jsdoc;
+	#my $extern_js;
+	##my @externs_deps;
+	#my %meta;
+
+	#if( $tagline =~ /^([^\t]*)\t([^\t]*)\t.*\$\/;"\t([a-z]).*link\:([\S]*)/){
+		#$tagname = $1;
+		#$type = $3;
+		#$link = $4;
+
+		#@extern_jsdoc = ();
+		#$extern_js = "";
+		#@extern_deps = ();
+
+		## handle namespaces
+		#if($link =~ /\./){
+			#@namespace = split(/\./, $link);
+		#} else {
+			#@namespace = ($link);
+		#}
+		#$ns_len = scalar(@namespace);
+		##create Namespace component objects if they do not exist
+		## loop through the namespace bits, removing the last bit until there's none left
+		#while ($ns_len > 0){
+			#if($ns_len > 1){
+				#$namespaceStr = join(".", @namespace);
+			#} else {
+				#$namespaceStr = $namespace[0];
+			#}
+			#if (!exists $externs{$namespaceStr}){
+				#if ($namespaceStr =~ /\./){
+					#$extern_js = "$namespaceStr = {};\n";
+					#@extern_deps = getNSDeps($namespaceStr);
+				#} else {
+					#if(!is_external($namespaceStr)){
+						##single element namespace object requies var
+						#$extern_js = "var $namespaceStr;\n";
 					#}
 				#}
-				##construct extern object
-				#$externs{$extern} = { 
+				#push(@extern_jsdoc, "/** @type {Object} */\n");
+				##construct extern data object
+				#$externs{$namespaceStr} = {
 					#jsdoc => \@extern_jsdoc,
 					#js => $extern_js,
 					#deps => \@extern_deps,
-					#symbol => $extern
-				#};
+					#symbol => $namespaceStr
+				#}
 			#}
-		}
-	}
-}
-
-#namespaces
-foreach(@taglines){
-	my $tagline = $_;
-	my $tagname = "";
-	my @namespace;
-	my $type = "";
-	my $link = "";
-	my $singleton = 0;
-	my $extern;
-	my $ns_len;
-	my $namespaceStr;
-	my $extends;
-	my $return;
-	my $args;
-	my @deps;
-	my @extern_jsdoc;
-	my $extern_js;
-	#my @externs_deps;
-	my %meta;
-
-	if( $tagline =~ /^([^\t]*)\t([^\t]*)\t.*\$\/;"\t([a-z]).*link\:([\S]*)/){
-		$tagname = $1;
-		$type = $3;
-		$link = $4;
-
-		@extern_jsdoc = ();
-		$extern_js = "";
-		@extern_deps = ();
-
-		# handle namespaces
-		if($link =~ /\./){
-			@namespace = split(/\./, $link);
-		} else {
-			@namespace = ($link);
-		}
-		$ns_len = scalar(@namespace);
-		#create Namespace component objects if they do not exist
-		# loop through the namespace bits, removing the last bit until there's none left
-		while ($ns_len > 0){
-			if($ns_len > 1){
-				$namespaceStr = join(".", @namespace);
-			} else {
-				$namespaceStr = $namespace[0];
-			}
-			if (!exists $externs{$namespaceStr}){
-				if ($namespaceStr =~ /\./){
-					$extern_js = "$namespaceStr = {};\n";
-					@extern_deps = getNSDeps($namespaceStr);
-				} else {
-					if(!is_external($namespaceStr)){
-						#single element namespace object requies var
-						$extern_js = "var $namespaceStr;\n";
-					}
-				}
-				push(@extern_jsdoc, "/** @type {Object} */\n");
-				#construct extern data object
-				$externs{$namespaceStr} = {
-					jsdoc => \@extern_jsdoc,
-					js => $extern_js,
-					deps => \@extern_deps,
-					symbol => $namespaceStr
-				}
-			}
-			#decrement 
-			pop(@namespace);
-			$ns_len = scalar(@namespace);
-		}
-	}
-}
+			##decrement 
+			#pop(@namespace);
+			#$ns_len = scalar(@namespace);
+		#}
+	#}
+#}
 # sort deps
 #for $extrn ( keys %externs )
 #{
@@ -288,8 +357,8 @@ sub is_external
 		return 0;
 	}
 }
+
 #process a tag with a constructor or method and print the params and return type, if any
-#returns args for signature
 sub getFnMeta
 {
 	my $tag = shift;
@@ -301,24 +370,29 @@ sub getFnMeta
     my $args = "";
 	my @fn_params = ();
 	my @fn_deps = ();
-	print "TAG: $tag \n";
+	#print "TAG: $tag \n";
+
 	if($tag =~ /\tsignature\:\(([^\)]+)\)/){
 
 		$sig = $1;
 		print "SIG: $sig \n";
 		#normalize parms into an array
 		if(length($sig) > 0){
-			if(index($sig, /\,/) > -1){
+			if(index($sig, ",") > -1){
+				print "MULTIPLE_PARAM \n";
 				@params = split(/\,/, $sig);
 			} else {
 				#single arg
+				print "SINGLE_PARAM \n";
 				@params = ($sig);
 			}
 		} else {
 			#no params
 			@params = ();
 		}
-
+		print "PARAMS: @params \n";
+		my $np = scalar(@params);
+		print "NUMPARAMS = $np \n";
 		#iterate over the params.. parse name & type
 		foreach $param(@params){
 			#remove <++>
@@ -337,6 +411,7 @@ sub getFnMeta
                         $pname =~ s/\*$// ;
                         $ptype = '...' . $ptype;
                     }
+					print "PNAME: $pname , PTYPE: $ptype \n";
 					#add param to array of parameter jsdoc declarations
 					push(@fn_params, " * \@param {$ptype} $pname \n");
 					#add the type declaration as a dependency
@@ -350,8 +425,21 @@ sub getFnMeta
 				}
 			}
 		}
+		#debug
+		my $np = scalar(@fn_params);
+		print "NUM_PARAMS = $np \n";
+		foreach $parm(@fn_params){
+			print "FN_PARAM: $parm \n";
+		}
+		print "ARG: $args \n";
+		print "DEPS: @fn_deps \n";
 	}
-    return { args => $args, params => \@fn_params, deps => \@fn_deps};
+
+    return { 
+		args => $args,
+	   	params => \@fn_params,
+	   	deps => \@fn_deps
+	};
 }
 
 sub convertType	
