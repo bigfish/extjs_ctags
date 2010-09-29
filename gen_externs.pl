@@ -75,6 +75,10 @@ foreach $classname(keys %classes){
 	}
 	
 	print "deps: @deps \n";
+	my @params = @{$class_meta{'params'}};
+	foreach $param(@params){
+		print "$param ";
+	}
 	#print "args: " . %{$classes{$classname}}->{'meta'}->{'args'} . "\n";
 	#print "params:  @{%{$classes{$classname}}->{'meta'}->{'params'}} \n";
 }
