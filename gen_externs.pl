@@ -74,22 +74,6 @@ foreach(@taglines){
 		}
 	}
 }
-# now add superclass (if any) to class dependencies
-#foreach $classname(keys %classes){
-	#print "CLASS $classname \n";
-	#my %class_meta = %{$classes{$classname}->{'meta'}};
-	#my $args = $class_meta{'args'};
-	#print "args :: $args \n";
-	##my @deps = @{$class_meta{'deps'}};
-
-	#if (exists %{$classes{$classname}}->{'super'} ){
-		#my $superclass = $classes{$classname}->{'super'};
-		##add superclass to dependencies
-		#push(@{$class_meta{'deps'}}, $superclass);
-	#}
-	##print "deps: @deps \n";
-	##my @params = @{$class_meta{'params'}};
-#}
 
 #outlines buffers output
 my @outlines = ();
@@ -142,19 +126,19 @@ foreach(@taglines){
 
 				#class should have been parsed earlier
 				if (exists $classes{$extern} ){
-					print "FOUND CLASS $extern\n";
+					#print "FOUND CLASS $extern\n";
 
 					my $class_ref = $classes{$extern};
 					my %class_meta = %{$class_ref->{'meta'}};
 					my $args = $class_meta{'args'};
 
-					print "ARGS: $args \n";
+					#print "ARGS: $args \n";
 
 					@deps = @{$class_meta{'deps'}};
-					print "$extern DEPS: @deps \n";
+					#print "$extern DEPS: @deps \n";
 
 					@extern_deps = (@extern_deps, @deps);
-					print "ALL_DEPS: @extern_deps \n";
+					#print "ALL_DEPS: @extern_deps \n";
 					
 					@params = @{$class_meta{'params'}};
 					foreach $param(@params){
@@ -184,40 +168,40 @@ foreach(@taglines){
 			#attach methods to the prototype of the constructor,
 			#except static methods ( which are simply members of the 'class' object)
 			
-			#$extern = "$link\.$tagname";
+			$extern = "$link\.$tagname";
 
-			#if(!exists $externs{$extern} && !is_external($tagname)){
+			if(!exists $externs{$extern} && !is_external($tagname)){
 
-				#push(@extern_jsdoc, "/**\n");
-				#$meta = getFnMeta($tagline);
-				#$args = $meta->{'args'};
-				#@extern_deps = @{$meta->{'deps'}};
+				push(@extern_jsdoc, "/**\n");
+				$meta = getFnMeta($tagline);
+				$args = $meta->{'args'};
+				@extern_deps = @{$meta->{'deps'}};
+#----> I am here.
+				print "meth deps: @extern_deps \n";
+				#if has type: use type as return
+				if($tagline =~ /\ttype\:([^\t]*)/){
+					$return = $1;
+					$return = convertType($return);
+					push(@extern_jsdoc, " * \@return {$return}\n");
+					push(@extern_deps, "{$return}");
+				}
+				push(@extern_jsdoc, " */\n");
 
-				##print "deps: @deps \n";
-				##if has type: use type as return
-				#if($tagline =~ /\ttype\:([^\t]*)/){
-					#$return = $1;
-					#$return = convertType($return);
-					#push(@extern_jsdoc, " * \@return {$return}\n");
-					#push(@extern_deps, "{$return}");
-				#}
-				#push(@extern_jsdoc, " */\n");
+				if ($tagline =~ /\tisstatic\:yes/){
+					$extern_js = "$link\.$tagname = function($args){};\n";
+				} else {
+					#add method to constructor prototype
+					$extern_js = "$link\.prototype\.$tagname = function($args){};\n";
+				}
 
-				#if ($tagline =~ /\tisstatic\:yes/){
-					#$extern_js = "$link\.$tagname = function($args){};\n";
-				#} else {
-					##add method to constructor prototype
-					#$extern_js = "$link\.prototype\.$tagname = function($args){};\n";
-				#}
-
-				##construct extern data object
-				#$externs{$extern} = { 
-					#jsdoc  => \@extern_jsdoc,
-					#js     => $extern_js,
-					#deps   => \@extern_deps,
-					#symbol => $extern
-				#};
-			#}
+				#construct extern data object
+				$externs{$extern} = { 
+					jsdoc  => \@extern_jsdoc,
+					js     => $extern_js,
+					deps   => \@extern_deps,
+					symbol => $extern
+				};
+			}
 		} elsif ($type =~ /v/){ #vars
 			#$extern = "$link\.$tagname";
 			#if(!exists $externs{$extern} && !is_external($tagname)){
@@ -329,15 +313,15 @@ foreach(@taglines){
 	#print "extrn_deps: $numdeps\n";
 
 #}
-foreach $extern_key(keys %externs){
-	#print "$extern_key deps: ";
-	@deps = @{$externs{$extern_key}->{'deps'}};
-	my $numdeps = scalar(@deps);
-	print "extrn_deps: $numdeps\n";
-	#print " @deps\n";
-	#print $externs{$extern_key}{'js'};
+#foreach $extern_key(keys %externs){
+	##print "$extern_key deps: ";
+	#@deps = @{$externs{$extern_key}->{'deps'}};
+	#my $numdeps = scalar(@deps);
+	#print "extrn_deps: $numdeps\n";
+	##print " @deps\n";
+	##print $externs{$extern_key}{'js'};
 
-}
+#}
 #  --> for each dependency
 #  -------> find the index of the dependency in the externs
 #  -------> add that index to a list
