@@ -24,7 +24,6 @@ Creates an iframe shim for this element to keep selects and other windowed objec
 Inserts (or creates) the passed element (or DomHelper config) as a sibling of this element
 Convenience method for constructing a KeyMap
 Creates a KeyMap for this element
-Measures the element's content height and updates height to match. Note: this function uses setTimeout so
 Sets the element's box. Use getBox() on another element to get a box obj. If animate is true then width, height, x and y will be animated concurrently.
 Return an object defining the area of this Element which can be passed to {@link #setBox} to
 Move this element relative to its current position.
@@ -108,7 +107,7 @@ This method is only used by a DataProxy which has retrieved data from a remote s
 Decode a JSON response from server.
 Create a data block containing Ext.data.Records from a JSON object.
 After any data loads, the raw JSON data is available for further custom processing.  If no data is
-Final action of a write event.  Apply the written data-object to params.
+<p>This method should not need to be called by application code, however it may be useful on occasion to
 Implements abstract Ext.data.DataWriter#createRecord
 Implements abstract Ext.data.DataWriter#updateRecord
 Implements abstract Ext.data.DataWriter#destroyRecord
@@ -347,10 +346,11 @@ Registers new overflow element(s) to auto scroll
 Unregisters overflow element(s) so they are no longer scrolled
 The number of pixels from the top or bottom edge of a container the pointer needs to be to
 The number of pixels from the right or left edge of a container the pointer needs to be to
-The number of pixels to scroll in each scroll increment (defaults to 50)
+The number of pixels to scroll in each scroll increment (defaults to 100)
 The frequency of scrolls in milliseconds (defaults to 500)
 True to animate the scroll (defaults to true)
 The animation duration in seconds - 
+The named drag drop {@link Ext.dd.DragSource#ddGroup group} to which this container belongs (defaults to undefined). 
 Manually trigger a cache refresh.
 Updates the proxy's visual element to indicate the status of whether or not drop is allowed
 Resets the status indicator to the default dropNotAllowed value
@@ -378,6 +378,8 @@ Collection of operator comparison functions. The default operators are =, !=, ^=
 Selects an array of DOM nodes by CSS/XPath selector. Shorthand of {@link Ext.DomQuery#select}
 Visibility mode constant for use with {@link #setVisibilityMode}. Use visibility to hide element
 Visibility mode constant for use with {@link #setVisibilityMode}. Use display to hide element
+Visibility mode constant for use with {@link #setVisibilityMode}. Use offsets (x and y positioning offscreen)
+Defaults to 'x-hide-nosize'
 The element's default display mode  (defaults to "")
 Sets the element's visibility mode. When setVisible() is called it
 Perform custom animation on this element.
@@ -438,6 +440,7 @@ True if the browser is in strict (standards-compliant) mode, as opposed to quirk
 True if the page is running over SSL
 True when the document is fully initialized and ready for action
 True if the {@link Ext.Fx} Class is available
+HIGHLY EXPERIMENTAL
 True to automatically uncache orphaned Ext.Elements periodically (defaults to true)
 True to automatically purge event listeners during garbageCollection (defaults to false).
 EXPERIMENTAL - True to cascade listener removal to child elements when an element is removed.
@@ -454,6 +457,7 @@ Converts any iterable (numeric indices and a length property) into a true array
 Iterates an array calling the supplied function.
 Iterates either the elements in an array, or each of the properties in an object.
 Return the dom node for the passed String (id), dom node, or Ext.Element.
+Returns the current document body as an {@link Ext.Element}.
 Returns the current document body as an {@link Ext.Element}.
 Removes a DOM node from the document.
 <p>Removes this element from the document, removes all DOM event listeners, and deletes the cache reference.
@@ -542,6 +546,14 @@ Returns the current value for a key
 Sets the value for a key
 Clears a value from the state
 Gets the currently configured state provider
+Contains all of the items currently managed
+Returns a component by {@link Ext.Component#id id}.
+Registers an item to be managed
+Unregisters a component by removing it from this manager
+<p>Registers a new Component constructor, keyed by a new
+Checks if a Component type is registered.
+Creates and returns an instance of whatever this manager manages, based on the supplied type and config object
+Registers a function that will be called when a Component with the specified id is added to the manager. This will happen on instantiation.
 Create a cookie with the specified name and value. Additional settings
 Retrieves cookies that are accessible by the current page. If a cookie
 Removes a cookie with the provided name from the browser
@@ -560,6 +572,14 @@ Returns a substring from within an original string
 Converts a string to all lower case letters
 Converts a string to all upper case letters
 Converts the first character only of a string to upper case
+Creates an interceptor function. The passed function is called before the original one. If it returns false,
+Creates a delegate (callback) that sets the scope to obj.
+Calls this function after the number of millseconds specified, optionally in a specific scope. Example usage:
+Create a combined function call sequence of the original function + the passed function.
+Shorthand for {@link Ext.util.Functions#defer}   
+Shorthand for {@link Ext.util.Functions#createInterceptor}   
+Shorthand for {@link Ext.util.Functions#createSequence}
+Shorthand for {@link Ext.util.Functions#createDelegate}
 The id of the hidden field required for storing the current history token.
 The id of the iframe required by IE to manage the history stack.
 Initialize the global History instance.
@@ -611,6 +631,7 @@ A {@link Ext.util.MixedCollection MixedCollection} containing all the Ext.form.F
 Overridden and disabled. The editor element does not support standard valid/invalid marking. @hide
 Overridden and disabled. The editor element does not support standard valid/invalid marking. @hide
 If this radio is part of a group, it will return the selected value
+Sets either the checked/unchecked status of this Radio, or, if a string value
 The function used to validate email addresses.  Note that this is a very basic validation -- complete
 The error text to display when the email validation function returns false.  Defaults to:
 The keystroke filter mask to be applied on email input.  See the {@link #email} method for
@@ -627,7 +648,6 @@ init : function(grid){
 Locks the selections.
 Unlocks the selections.
 Returns true if the selections are locked.
-Optional. A function which returns displayable data when passed the following parameters:
 An Array of {@link Ext.grid.Column Column definition} objects representing the configuration
 <p>The provided implementation of the getDragData method which collects the data to be dragged from the GridPanel on mousedown.</p>
 <p>The provided implementation of the onInitDrag method. Sets the <tt>innerHTML</tt> of the drag proxy which provides the "picture"
@@ -635,8 +655,21 @@ An empty immplementation. Implement this to provide behaviour after a repair of 
 <p>An empty implementation. Implement this to provide coordinates for the drag proxy to slide back to after an invalid drop.</p>
 Override this function to apply custom CSS classes to rows during rendering.  You can also supply custom
 <p>A customized implementation of a {@link Ext.dd.DragZone DragZone} which provides default implementations
+Updates the dimensions used by this axis
+The CSS class added to all group header cells. Defaults to 'grid-hd-group-cell'
+Returns the headers to be rendered at the top of the grid. Should be a 2-dimensional array, where each item specifies the number
+Returns the headers to be rendered on the left of the grid. Should be a 2-dimensional array, where each item specifies the number
+The master template to use when rendering the GridView. Has a default template
+Returns the total width of all row headers as specified by {@link #getRowHeaders}
+Refreshs the grid UI
+Sets the title text in the top left segment of the PivotGridView
+Scrolls to the given component.
+Returns the current scroll position of the innerCt element
+Returns the current scroll position of the innerCt element
 A reference to the {@link Ext.Component} that is active.  For example, <pre><code>
 Read only. The CSS style specification string added to field labels in this layout if not
+When we have a shortfall but are not tooNarrow, we need to shrink the width of each non-flexed item.
+When we have a shortfall but are not tooNarrow, we need to shrink the height of each non-flexed item.
 Set this property to <tt>true</tt> to disable the header click handler disabling sort
 <p>Function which can be overridden which returns the data object passed to this
 Read-only. True if the mask is currently disabled so that it will not be displayed (defaults to false)
@@ -654,11 +687,11 @@ The Panel's footer {@link Ext.Element Element}. Read-only.
 <p>A {@link Ext.Toolbar Toolbar} object, a Toolbar config, or an array of
 The event to listen to for resizing in layouts. Defaults to <tt>'bodyresize'</tt>.
 The proxy Element that is resized in place of the real Element during the resize operation.
+True while the thumb is in a drag operation
 Renders the thumb into a slider
 Enables the thumb if it is currently disabled
 Disables the thumb if it is currently enabled
 Sets up an Ext.dd.DragTracker for this thumb
-True while the thumb is in a drag operation
 this.el = Ext.get(dragElement, true);
 this.resizingEl = Ext.get(resizingElement, true);
 The increment, in pixels by which to move this SplitBar. When <i>undefined</i>, the SplitBar moves smoothly.
@@ -678,7 +711,7 @@ Initialize the global QuickTips instance and prepare any quick tips.
 Enable quick tips globally.
 Disable quick tips globally.
 Returns true if quick tips are enabled, else false.
-Gets the global QuickTips instance.
+Gets the single {@link Ext.QuickTip QuickTip} instance used to show tips from all registered elements.
 Configures a new quick tip instance and assigns it to a target element.  See
 Removes any registered quick tip from the target element and destroys it.
 Alias of {@link #register}.

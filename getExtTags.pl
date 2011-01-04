@@ -356,7 +356,7 @@ foreach(@lines){
 						}
 						#if ($class =~ /Date/ && $mName =~ /_xMonth/){
 						if ($type eq ""){
-							print " TYPE DETECTION FAIL in $class : $line \n";
+							#print " TYPE DETECTION FAIL in $class : $line \n";
 						}
 					}
 					$tagStr = $tagStr.$TAB.'type:'.$type;
